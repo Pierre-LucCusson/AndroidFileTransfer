@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">AndroidFileTransfer</string>
+    <string name="app_name">Android File Transfer</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_qr_scanner">QR Code Scanner</string>
+    <string name="title_nfc">NFC</string>
+    <string name="title_contacts">Contacts</string>
+
+    <string name="permission_access_network_state_is_required">Please accept permission ACCESS_WIFI_STATE.</string>
+
+    <string name="my_id">My Device ID: </string>
+    <string name="my_ip">My IP Address: </string>
+
 </resources>
