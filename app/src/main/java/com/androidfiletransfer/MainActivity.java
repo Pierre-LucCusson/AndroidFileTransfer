@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setQrCodeImage() {
-        QrCode qrCode = new QrCode(myDeviceId + ":" + myIpAddress); //TODO this should be a Contact.toJson
+        QrCode qrCode = new QrCode( new Contact(myDeviceId, myIpAddress).toJson());
         qrCodeImage.setImageBitmap(qrCode.getImage());
     }
 
