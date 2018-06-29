@@ -23,6 +23,10 @@ public class Contact {
         return new Gson().toJson(this);
     }
 
+    public static Contact fromJson(String json) {
+        return new Gson().fromJson(json, Contact.class);
+    }
+
     public String getDeviceId() {
         return deviceId;
     }
@@ -61,6 +65,17 @@ public class Contact {
 
     public void setLastLogin(long lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "deviceId='" + deviceId + '\'' +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", isOnline=" + isOnline +
+                ", distance=" + distance +
+                ", lastLogin=" + lastLogin +
+                '}';
     }
 
     public void save() {

@@ -1,5 +1,6 @@
 package com.androidfiletransfer;
 
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -14,8 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
+import static com.google.zxing.integration.android.IntentIntegrator.QR_CODE_TYPES;
+
+public class MainActivity extends AppCompatActivity {
+    private Contact contact;
     private TextView mTextMessage;
 
     private RelativeLayout qrCodeLayout;
@@ -37,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_qr_scanner:
                     mTextMessage.setText(R.string.title_qr_scanner);
+
+                    IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
+                    scanIntegrator.initiateScan(QR_CODE_TYPES);
+
                     hideQrLayout();
                     return true;
                 case R.id.navigation_nfc:
@@ -51,8 +61,21 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+    @Override
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent in) {
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, in);
+        if (scanningResult != null) {
+            try {
+                String contents = in.getStringExtra("SCAN_RESULT");
+//                String format = in.getStringExtra("SCAN_RESULT_FORMAT");
+                Contact contact = Contact.fromJson(contents);
 
+                mTextMessage.setText(contact.toString());
+            }
+            catch (NullPointerException e){mTextMessage.setText(e.getMessage());}
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
