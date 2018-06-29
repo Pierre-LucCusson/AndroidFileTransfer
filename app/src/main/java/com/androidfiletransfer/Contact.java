@@ -1,6 +1,10 @@
 package com.androidfiletransfer;
 
+import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 public class Contact {
 
@@ -78,12 +82,26 @@ public class Contact {
                 '}';
     }
 
-    public void save() {
-        //TODO this should save the contact in the preferences
+    public void add(SharedPreferences sharedPreferences, ArrayList contacts) {
+        // Add current contact to the list
+        contacts.add(this);
+
+        save(sharedPreferences, contacts);
     }
 
-    public void delete() {
-        //TODO this should delete the contact in the preferences
+    public void delete(SharedPreferences sharedPreferences, ArrayList contacts) {
+        // Remove current contact from the list
+        contacts.remove(this);
+
+        save(sharedPreferences, contacts);
+    }
+
+    public void save(SharedPreferences sharedPreferences, ArrayList contacts) {
+        // Save the contacts list in shared preferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.putString("Contacts", new Gson().toJson(contacts));
+        editor.commit();
     }
 
 }

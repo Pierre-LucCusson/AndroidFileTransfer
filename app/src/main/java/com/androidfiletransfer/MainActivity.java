@@ -1,6 +1,7 @@
 package com.androidfiletransfer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,8 +16,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.google.zxing.integration.android.IntentIntegrator.QR_CODE_TYPES;
 
@@ -30,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView ipAddressText;
     private String myIpAddress;
     private ImageView qrCodeImage;
+
+    SharedPreferences sharedPrefs;
+    List<String> contacts;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -92,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        sharedPrefs = getSharedPreferences("Contacts", 0);
+        contacts = new ArrayList<>();
+
+        // Load contacts
+        contacts = new Gson().fromJson(sharedPrefs.getString("Contacts", ""), List.class);
     }
 
     private void setQrCodeLayoutContent() {
