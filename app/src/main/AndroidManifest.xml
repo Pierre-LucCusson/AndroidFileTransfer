@@ -30,7 +30,10 @@
         <activity
             android:name=".NfcSendActivity"
             android:label="@string/title_activity_nfc_send"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NfcReceiveActivity"
+            android:label="@string/title_activity_nfc_receive"></activity>
     </application>
 
 </manifest>

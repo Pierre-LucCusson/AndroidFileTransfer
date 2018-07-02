@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private String myIpAddress;
     private ImageView qrCodeImage;
 
-    private boolean nfcMode = true;
-
     SharedPreferences sharedPrefs;
     List<String> contacts;
 
@@ -60,17 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
                     hideQrLayout();
                     return true;
-                case R.id.navigation_nfc:
-                    mTextMessage.setText(R.string.title_nfc);
-
-                    nfcMode = !nfcMode;
-                    if(true) {
-                        openNfcSendActivity();
-                    }
-                    else {
-                        openNfcReceiveActivity();
-                    }
-
+                case R.id.navigation_nfc_send:
+                    mTextMessage.setText(R.string.title_nfc_send);
+                    openNfcSendActivity();
+                    hideQrLayout();
+                    return true;
+                case R.id.navigation_nfc_receive:
+                    mTextMessage.setText(R.string.title_nfc_receive);
+                    openNfcReceiveActivity();
                     hideQrLayout();
                     return true;
                 case R.id.navigation_contacts:
@@ -165,7 +160,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openNfcReceiveActivity() {
-
+        Intent intentNfcReceive = new Intent(MainActivity.this, NfcReceiveActivity.class);
+        startActivity(intentNfcReceive);
     }
 
 }

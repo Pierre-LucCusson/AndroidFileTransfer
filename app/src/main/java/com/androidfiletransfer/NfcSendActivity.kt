@@ -32,7 +32,7 @@ class NfcSendActivity : AppCompatActivity() {
 //        nfcAdapter?.setNdefPushMessage(ndefMessage, this)
     }
 
-    fun getNdefRecord(ndefMessage: String, locale: Locale, encodeInUtf8: Boolean): NdefRecord {
+    private fun getNdefRecord(ndefMessage: String, locale: Locale, encodeInUtf8: Boolean): NdefRecord {
         val langBytes = locale.getLanguage().toByteArray(Charset.forName("US-ASCII"))
 
         val utfEncoding = if (encodeInUtf8) Charset.forName("UTF-8") else Charset.forName("UTF-16")

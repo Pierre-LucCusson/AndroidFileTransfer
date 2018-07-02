@@ -12,9 +12,14 @@
         android:title="@string/title_qr_scanner" />
 
     <item
-        android:id="@+id/navigation_nfc"
+        android:id="@+id/navigation_nfc_send"
         android:icon="@android:drawable/ic_menu_set_as"
-        android:title="@string/title_nfc" />
+        android:title="@string/title_nfc_send" />
+
+    <item
+        android:id="@+id/navigation_nfc_receive"
+        android:icon="@android:drawable/ic_menu_set_as"
+        android:title="@string/title_nfc_receive" />
 
     <item
         android:id="@+id/navigation_contacts"
