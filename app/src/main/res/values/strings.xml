@@ -9,5 +9,6 @@
 
     <string name="my_id">My Device ID: </string>
     <string name="my_ip">My IP Address: </string>
+    <string name="title_activity_nfc_send">NFC Send</string>
 
 </resources>

@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private String myIpAddress;
     private ImageView qrCodeImage;
 
+    private boolean nfcMode = true;
+
     SharedPreferences sharedPrefs;
     List<String> contacts;
 
@@ -60,6 +62,15 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_nfc:
                     mTextMessage.setText(R.string.title_nfc);
+
+                    nfcMode = !nfcMode;
+                    if(true) {
+                        openNfcSendActivity();
+                    }
+                    else {
+                        openNfcReceiveActivity();
+                    }
+
                     hideQrLayout();
                     return true;
                 case R.id.navigation_contacts:
@@ -70,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-    @Override
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent in) {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, in);
         if (scanningResult != null) {
@@ -144,6 +155,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void showQrLayout() {
         qrCodeLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void openNfcSendActivity() {
+        Intent intentNfcSend = new Intent(MainActivity.this, NfcSendActivity.class);
+        String msgNfcToSend = new Contact("deviceTest", "192.188.0.1").toJson();    //TODO replace With the contact that need to be transfer
+        intentNfcSend.putExtra("EXTRA_NFC_CONTACT_TO_SEND", msgNfcToSend);
+        startActivity(intentNfcSend);
+    }
+
+    private void openNfcReceiveActivity() {
+
     }
 
 }
