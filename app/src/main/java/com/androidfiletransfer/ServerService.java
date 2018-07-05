@@ -35,6 +35,11 @@ public class ServerService  extends Service {
     public void onCreate() {
         super.onCreate();
         server = new Server();
+        try {
+            server.start();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
