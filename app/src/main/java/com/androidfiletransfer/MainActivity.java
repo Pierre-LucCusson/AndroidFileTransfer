@@ -1,9 +1,13 @@
 package com.androidfiletransfer;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -24,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.google.zxing.integration.android.IntentIntegrator.QR_CODE_TYPES;
 
 public class MainActivity extends AppCompatActivity {
     private Contact contact;
@@ -40,6 +45,27 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPrefs;
     List<String> contacts;
 
+    private Server server;
+
+    private ServerService serverService;
+    public ServiceConnection myConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName className, IBinder binder) {
+            serverService = ((ServerService.MyBinder) binder).getService();
+            server = serverService.getServer();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            serverService = null;
+            server = null;
+        }
+    };
+
+    public void doBindService() {
+        Intent intent = new Intent(this, ServerService.class);
+        bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -53,8 +79,19 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_qr_scanner:
                     mTextMessage.setText(R.string.title_qr_scanner);
 
+                    /*
+                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+                    intent.setPackage("com.androidfiletransfer");
+                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                    startActivityForResult(intent, 0);
+                    */
+
                     IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
-                    scanIntegrator.initiateScan(QR_CODE_TYPES);
+                    scanIntegrator.setDesiredBarcodeFormats(Arrays.asList(BarcodeFormat.QR_CODE.toString()));
+                    scanIntegrator.setCameraId(0);
+                    scanIntegrator.setBeepEnabled(true);
+                    scanIntegrator.setBarcodeImageEnabled(false);
+                    scanIntegrator.initiateScan();
 
                     hideQrLayout();
                     return true;
@@ -95,6 +132,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (serverService == null) {
+            doBindService();
+        }
+
         setContentView(R.layout.activity_main);
 
         mTextMessage = findViewById(R.id.message);
