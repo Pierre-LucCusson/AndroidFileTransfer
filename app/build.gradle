@@ -33,6 +33,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'com.google.code.gson:gson:2.8.2'
+    implementation group: 'org.nanohttpd', name: 'nanohttpd', version: '2.3.0'
 }
 repositories {
     mavenCentral()

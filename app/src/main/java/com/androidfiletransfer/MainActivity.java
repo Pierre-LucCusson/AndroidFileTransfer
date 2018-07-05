@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
             WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-            myIpAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+            myIpAddress = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress()) + ":" + Server.PORT;
         } catch (Exception e) {
             Toast.makeText(this, R.string.permission_access_network_state_is_required, Toast.LENGTH_LONG).show();
         }
