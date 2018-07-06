@@ -18,6 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:enabled="true"
+            android:name=".ServerService"/>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
