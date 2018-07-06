@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Contact {
 
@@ -82,21 +83,21 @@ public class Contact {
                 '}';
     }
 
-    public void add(SharedPreferences sharedPreferences, ArrayList contacts) {
+    public void add(SharedPreferences sharedPreferences, List contacts) {
         // Add current contact to the list
         contacts.add(this);
 
         save(sharedPreferences, contacts);
     }
 
-    public void delete(SharedPreferences sharedPreferences, ArrayList contacts) {
+    public void delete(SharedPreferences sharedPreferences, List contacts) {
         // Remove current contact from the list
         contacts.remove(this);
 
         save(sharedPreferences, contacts);
     }
 
-    public void save(SharedPreferences sharedPreferences, ArrayList contacts) {
+    public void save(SharedPreferences sharedPreferences, List contacts) {
         // Save the contacts list in shared preferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();

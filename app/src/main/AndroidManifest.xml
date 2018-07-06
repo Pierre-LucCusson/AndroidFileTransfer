@@ -39,6 +39,9 @@
         <activity
             android:name=".NfcReceiveActivity"
             android:label="@string/title_activity_nfc_receive"></activity>
+        <activity
+            android:name=".ContactsActivity"
+            android:label="@string/title_activity_contacts_list"></activity>
     </application>
 
 </manifest>

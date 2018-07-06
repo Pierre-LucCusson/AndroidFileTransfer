@@ -12,5 +12,6 @@
     <string name="my_ip">My IP Address: </string>
     <string name="title_activity_nfc_send">NFC Send</string>
     <string name="title_activity_nfc_receive">NFC Receive</string>
+    <string name="title_activity_contacts_list">Contacts list</string>
 
 </resources>

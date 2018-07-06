@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                     hideQrLayout();
                     return true;
                 case R.id.navigation_contacts:
-                    mTextMessage.setText("This view should show the list of contacts with the ability to order them by different filter");
+                    openContactsActivity();
                     hideQrLayout();
                     return true;
             }
@@ -204,6 +204,11 @@ public class MainActivity extends AppCompatActivity {
     private void openNfcReceiveActivity() {
         Intent intentNfcReceive = new Intent(MainActivity.this, NfcReceiveActivity.class);
         startActivity(intentNfcReceive);
+    }
+
+    private void openContactsActivity() {
+        Intent intentContacts = new Intent(MainActivity.this, ContactsActivity.class);
+        startActivity(intentContacts);
     }
 
 }
