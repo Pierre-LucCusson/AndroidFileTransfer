@@ -2,10 +2,12 @@
     <string name="app_name">Android File Transfer</string>
     <string name="title_home">Home</string>
     <string name="title_qr_scanner">QR Code Scanner</string>
-    <string name="title_nfc_send">NFC Send</string>
-    <string name="title_nfc_receive">NFC Receive</string>
+    <string name="title_nfc">NFC</string>
     <string name="title_contacts">Contacts</string>
     <string name="title_files">Files</string>
+
+    <string name="nfc_send">NFC Send</string>
+    <string name="nfc_receive">NFC Receive</string>
 
     <string name="permission_access_network_state_is_required">Please accept permission ACCESS_WIFI_STATE.</string>
 

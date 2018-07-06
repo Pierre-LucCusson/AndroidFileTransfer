@@ -9,6 +9,8 @@
 
     <include layout="@layout/qr_code_layout" />
 
+    <include layout="@layout/nfc_layout" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/filesRecyclerView"
         android:scrollbars="vertical"

@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Contact contact;
 
     private RelativeLayout qrCodeLayout;
+    private RelativeLayout nfcLayout;
     private RecyclerView filesRecyclerView;
 
     private TextView deviceIdText;
@@ -123,18 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                     return true;
-                case R.id.navigation_nfc_send:
-                    openNfcSendActivity();
-                    hideAllLayouts();
+                case R.id.navigation_nfc:
+                    showNfcLayout();
                     return true;
-//                    we can not have more then 4 navigation
-//                case R.id.navigation_nfc_receive:
-//                    mTextMessage.setText(R.string.title_nfc_receive);
-//                    openNfcReceiveActivity();
-//                    hideAllLayouts();
-//                    return true;
                 case R.id.navigation_contacts:
-                    openContactsActivity();
+//                    openContactsActivity();
                     hideAllLayouts();
                     return true;
                 case R.id.navigation_files:
@@ -171,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         qrCodeLayout = findViewById(R.id.qrCodeLayout);
+        nfcLayout = findViewById(R.id.nfcLayout);
+        initNfcButtonsListener();
         filesRecyclerView = findViewById(R.id.filesRecyclerView);
 
         deviceIdText = findViewById(R.id.deviceIdText);
@@ -227,9 +223,32 @@ public class MainActivity extends AppCompatActivity {
         qrCodeLayout.setVisibility(View.VISIBLE);
     }
 
-    private void hideAllLayouts() {
-        qrCodeLayout.setVisibility(View.GONE);
-        filesRecyclerView.setVisibility(View.GONE);
+    public void initNfcButtonsListener() {
+        findViewById(R.id.nfcSendButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNfcSendActivity();
+            }
+        });
+
+        findViewById(R.id.nfcReceiveButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNfcReceiveActivity();
+            }
+        });
+
+        findViewById(R.id.contactsButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openContactsActivity();
+            }
+        });
+    }
+
+    private void showNfcLayout() {
+        hideAllLayouts();
+        nfcLayout.setVisibility(View.VISIBLE);
     }
 
     private void showFilesLayout() {
@@ -237,6 +256,12 @@ public class MainActivity extends AppCompatActivity {
         FilesViewHandler filesView = new FilesViewHandler(this);
         filesView.setFilesRecyclerViewContent();
         filesRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideAllLayouts() {
+        qrCodeLayout.setVisibility(View.GONE);
+        nfcLayout.setVisibility(View.GONE);
+        filesRecyclerView.setVisibility(View.GONE);
     }
 
     private void openNfcSendActivity() {

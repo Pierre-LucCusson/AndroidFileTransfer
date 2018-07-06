@@ -12,15 +12,9 @@
         android:title="@string/title_qr_scanner" />
 
     <item
-        android:id="@+id/navigation_nfc_send"
+        android:id="@+id/navigation_nfc"
         android:icon="@android:drawable/ic_menu_set_as"
-        android:title="@string/title_nfc_send" />
-
-    <!--we can not have more then 4 item-->
-    <!--<item-->
-        <!--android:id="@+id/navigation_nfc_receive"-->
-        <!--android:icon="@android:drawable/ic_menu_set_as"-->
-        <!--android:title="@string/title_nfc_receive" />-->
+        android:title="@string/title_nfc" />
 
     <item
         android:id="@+id/navigation_contacts"

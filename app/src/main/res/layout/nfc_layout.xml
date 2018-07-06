@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nfcLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/nfcSendButton"
+        android:text="@string/nfc_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/nfc_button_margin"
+        android:layout_alignParentTop="true"/>
+
+    <Button
+        android:id="@+id/nfcReceiveButton"
+        android:text="@string/nfc_receive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/nfc_button_margin"
+        android:layout_below="@id/nfcSendButton" />
+
+    <Button
+        android:id="@+id/contactsButton"
+        android:text="Open My Friends Contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/nfc_button_margin"
+        android:layout_below="@id/nfcReceiveButton" />
+
+</RelativeLayout>
