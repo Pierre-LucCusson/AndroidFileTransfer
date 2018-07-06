@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -22,7 +25,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -46,8 +48,35 @@ public class MainActivity extends AppCompatActivity {
     List<String> contacts;
 
     private Server server;
-
     private ServerService serverService;
+
+    private Tracker tracker;
+    private final LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(android.location.Location location) {
+            Toast.makeText(getApplicationContext(), "Lat: " + location.getLatitude() + " - Long: " + location.getLongitude(), Toast.LENGTH_LONG);
+            System.err.println(location.getAccuracy() + " - " + location.getLongitude() + " - " + location.getLatitude());
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+
+
+
     public ServiceConnection myConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder binder) {
@@ -155,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Load contacts
         contacts = new Gson().fromJson(sharedPrefs.getString("Contacts", ""), List.class);
+
+        tracker = new Tracker(this);
+        tracker.startTracking(locationListener);
     }
 
     private void setQrCodeLayoutContent() {
