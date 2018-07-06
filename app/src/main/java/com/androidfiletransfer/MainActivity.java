@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -15,6 +13,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,10 +34,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Contact contact;
-    private TextView mTextMessage;
 
     private RelativeLayout qrCodeLayout;
-    private RelativeLayout filesLayout;
+    private RecyclerView filesRecyclerView;
 
     private TextView deviceIdText;
     private String myDeviceId;
@@ -76,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
-
-
     public ServiceConnection myConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder binder) {
@@ -104,11 +99,9 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
                     showQrLayout();
                     return true;
                 case R.id.navigation_qr_scanner:
-                    mTextMessage.setText(R.string.title_qr_scanner);
                     hideAllLayouts();
 
                     /*
@@ -128,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
                     return true;
                 case R.id.navigation_nfc_send:
-                    mTextMessage.setText(R.string.title_nfc_send);
                     openNfcSendActivity();
                     hideAllLayouts();
                     return true;
@@ -158,10 +150,10 @@ public class MainActivity extends AppCompatActivity {
                 String contents = in.getStringExtra("SCAN_RESULT");
 //                String format = in.getStringExtra("SCAN_RESULT_FORMAT");
                 Contact contact = Contact.fromJson(contents);
-
-                mTextMessage.setText(contact.toString());
             }
-            catch (NullPointerException e){mTextMessage.setText(e.getMessage());}
+            catch (NullPointerException e) {
+
+            }
         }
     }
 
@@ -175,10 +167,8 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        mTextMessage = findViewById(R.id.message);
-
         qrCodeLayout = findViewById(R.id.qrCodeLayout);
-        filesLayout = findViewById(R.id.filesLayout);
+        filesRecyclerView = findViewById(R.id.filesRecyclerView);
 
         deviceIdText = findViewById(R.id.deviceIdText);
         ipAddressText = findViewById(R.id.ipAddressText);
@@ -236,12 +226,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void hideAllLayouts() {
         qrCodeLayout.setVisibility(View.GONE);
-        filesLayout.setVisibility(View.GONE);
+        filesRecyclerView.setVisibility(View.GONE);
     }
 
     private void showFilesLayout() {
         hideAllLayouts();
-        filesLayout.setVisibility(View.VISIBLE);
+        FilesViewHandler filesView = new FilesViewHandler(this);
+        filesView.setFilesRecyclerViewContent();
+        filesRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void openNfcSendActivity() {
