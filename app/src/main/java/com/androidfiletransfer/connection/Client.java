@@ -1,4 +1,4 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.connection;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

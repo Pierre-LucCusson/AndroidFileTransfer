@@ -22,6 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidfiletransfer.files.FilesViewHandler;
+import com.androidfiletransfer.connection.Server;
+import com.androidfiletransfer.connection.ServerService;
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.integration.android.IntentIntegrator;

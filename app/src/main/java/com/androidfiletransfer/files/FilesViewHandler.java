@@ -1,9 +1,10 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.files;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.androidfiletransfer.Files.FilesAdapter;
+import com.androidfiletransfer.MainActivity;
+import com.androidfiletransfer.R;
 
 public class FilesViewHandler {
 

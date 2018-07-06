@@ -1,4 +1,4 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.connection;
 
 import fi.iki.elonen.NanoHTTPD;
 

@@ -1,6 +1,10 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.files;
 
 import android.app.Activity;
+
+import com.androidfiletransfer.connection.AsyncCommand;
+import com.androidfiletransfer.connection.Client;
+import com.androidfiletransfer.connection.ServerCommand;
 
 public class AsyncGetFile extends AsyncCommand {
     public AsyncGetFile(Activity activity, Client client) {

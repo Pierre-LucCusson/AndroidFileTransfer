@@ -1,4 +1,4 @@
-package com.androidfiletransfer
+package com.androidfiletransfer.connection
 
 class ServerCommand {
 

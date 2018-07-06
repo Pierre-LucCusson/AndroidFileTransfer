@@ -1,4 +1,4 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.connection;
 
 import android.app.Activity;
 import android.os.AsyncTask;

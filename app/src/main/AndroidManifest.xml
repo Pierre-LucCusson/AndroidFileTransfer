@@ -21,7 +21,7 @@
 
         <service
             android:enabled="true"
-            android:name=".ServerService"/>
+            android:name=".connection.ServerService"/>
 
         <activity
             android:name=".MainActivity"

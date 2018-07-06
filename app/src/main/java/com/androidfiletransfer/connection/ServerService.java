@@ -1,4 +1,4 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.connection;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,7 +11,7 @@ public class ServerService  extends Service {
     private IBinder mBinder = new MyBinder();
 
     public class MyBinder extends Binder {
-        ServerService getService() {
+        public ServerService getService() {
             return ServerService.this;
         }
     }

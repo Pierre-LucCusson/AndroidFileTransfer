@@ -1,6 +1,8 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.connection;
 
 import android.app.Activity;
+
+import com.androidfiletransfer.files.AsyncGetFile;
 
 public class ClientCommandManager {
     private Activity activity;
