@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
 
     private RelativeLayout qrCodeLayout;
+    private RelativeLayout filesLayout;
+
     private TextView deviceIdText;
     private String myDeviceId;
     private TextView ipAddressText;
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_qr_scanner:
                     mTextMessage.setText(R.string.title_qr_scanner);
+                    hideAllLayouts();
 
                     /*
                     Intent intent = new Intent("com.google.zxing.client.android.SCAN");
@@ -122,21 +125,25 @@ public class MainActivity extends AppCompatActivity {
                     scanIntegrator.setBarcodeImageEnabled(false);
                     scanIntegrator.initiateScan();
 
-                    hideQrLayout();
+
                     return true;
                 case R.id.navigation_nfc_send:
                     mTextMessage.setText(R.string.title_nfc_send);
                     openNfcSendActivity();
-                    hideQrLayout();
+                    hideAllLayouts();
                     return true;
-                case R.id.navigation_nfc_receive:
-                    mTextMessage.setText(R.string.title_nfc_receive);
-                    openNfcReceiveActivity();
-                    hideQrLayout();
-                    return true;
+//                    we can not have more then 4 navigation
+//                case R.id.navigation_nfc_receive:
+//                    mTextMessage.setText(R.string.title_nfc_receive);
+//                    openNfcReceiveActivity();
+//                    hideAllLayouts();
+//                    return true;
                 case R.id.navigation_contacts:
                     openContactsActivity();
-                    hideQrLayout();
+                    hideAllLayouts();
+                    return true;
+                case R.id.navigation_files:
+                    showFilesLayout();
                     return true;
             }
             return false;
@@ -171,10 +178,13 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = findViewById(R.id.message);
 
         qrCodeLayout = findViewById(R.id.qrCodeLayout);
+        filesLayout = findViewById(R.id.filesLayout);
+
         deviceIdText = findViewById(R.id.deviceIdText);
         ipAddressText = findViewById(R.id.ipAddressText);
         qrCodeImage = findViewById(R.id.qrCodeImage);
-        setQrCodeLayoutContent();
+
+        showQrLayout();
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -218,12 +228,20 @@ public class MainActivity extends AppCompatActivity {
         qrCodeImage.setImageBitmap(qrCode.getImage());
     }
 
-    private void hideQrLayout() {
-        qrCodeLayout.setVisibility(View.GONE);
+    private void showQrLayout() {
+        setQrCodeLayoutContent();
+        hideAllLayouts();
+        qrCodeLayout.setVisibility(View.VISIBLE);
     }
 
-    private void showQrLayout() {
-        qrCodeLayout.setVisibility(View.VISIBLE);
+    private void hideAllLayouts() {
+        qrCodeLayout.setVisibility(View.GONE);
+        filesLayout.setVisibility(View.GONE);
+    }
+
+    private void showFilesLayout() {
+        hideAllLayouts();
+        filesLayout.setVisibility(View.VISIBLE);
     }
 
     private void openNfcSendActivity() {

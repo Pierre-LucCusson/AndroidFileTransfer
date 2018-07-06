@@ -20,6 +20,7 @@
 
     <include layout="@layout/qr_code_layout" />
 
+    <include layout="@layout/files_layout" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

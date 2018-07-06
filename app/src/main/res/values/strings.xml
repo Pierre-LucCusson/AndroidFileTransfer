@@ -5,6 +5,7 @@
     <string name="title_nfc_send">NFC Send</string>
     <string name="title_nfc_receive">NFC Receive</string>
     <string name="title_contacts">Contacts</string>
+    <string name="title_files">Files</string>
 
     <string name="permission_access_network_state_is_required">Please accept permission ACCESS_WIFI_STATE.</string>
 
