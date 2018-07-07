@@ -1,7 +1,9 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.contacts;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.androidfiletransfer.R;
 import com.androidfiletransfer.contacts.ContactsViewHandler;
 
 public class ContactsActivity extends AppCompatActivity {

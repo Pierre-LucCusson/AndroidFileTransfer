@@ -1,10 +1,9 @@
-package com.androidfiletransfer;
+package com.androidfiletransfer.contacts;
 
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Contact {

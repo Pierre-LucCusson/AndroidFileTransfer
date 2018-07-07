@@ -5,9 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.androidfiletransfer.Contact;
-import com.androidfiletransfer.ContactsActivity;
-import com.androidfiletransfer.ContactsAdapter;
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
 import com.google.gson.Gson;

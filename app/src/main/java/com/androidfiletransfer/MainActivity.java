@@ -22,6 +22,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidfiletransfer.contacts.Contact;
+import com.androidfiletransfer.contacts.ContactsActivity;
 import com.androidfiletransfer.contacts.ContactsViewHandler;
 import com.androidfiletransfer.files.FilesViewHandler;
 import com.androidfiletransfer.connection.Server;
