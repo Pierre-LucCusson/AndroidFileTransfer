@@ -11,6 +11,8 @@
 
     <include layout="@layout/nfc_layout" />
 
+    <include layout="@layout/contacts_layout" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/filesRecyclerView"
         android:scrollbars="vertical"

@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidfiletransfer.contacts.ContactsViewHandler;
 import com.androidfiletransfer.files.FilesViewHandler;
 import com.androidfiletransfer.connection.Server;
 import com.androidfiletransfer.connection.ServerService;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RelativeLayout qrCodeLayout;
     private RelativeLayout nfcLayout;
+    private RecyclerView contactsRecyclerView;
     private RecyclerView filesRecyclerView;
 
     private TextView deviceIdText;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private ServerService serverService;
 
     private Tracker tracker;
+
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(android.location.Location location) {
@@ -90,6 +93,57 @@ public class MainActivity extends AppCompatActivity {
             server = null;
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (serverService == null) {
+            doBindService();
+        }
+
+        setContentView(R.layout.activity_main);
+
+        qrCodeLayout = findViewById(R.id.qrCodeLayout);
+        deviceIdText = findViewById(R.id.deviceIdText);
+        ipAddressText = findViewById(R.id.ipAddressText);
+        qrCodeImage = findViewById(R.id.qrCodeImage);
+
+        nfcLayout = findViewById(R.id.nfcLayout);
+        initNfcButtonsListener();
+
+        contactsRecyclerView = findViewById(R.id.contactsRecyclerView);
+        filesRecyclerView = findViewById(R.id.filesRecyclerView);
+
+        showQrLayout();
+
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        sharedPrefs = getSharedPreferences("Contacts", 0);
+        contacts = new ArrayList<>();
+
+        // Load contacts
+        contacts = new Gson().fromJson(sharedPrefs.getString("Contacts", ""), List.class);
+
+        tracker = new Tracker(this);
+        tracker.startTracking(locationListener);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent in) {
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, in);
+        if (scanningResult != null) {
+            try {
+                String contents = in.getStringExtra("SCAN_RESULT");
+//                String format = in.getStringExtra("SCAN_RESULT_FORMAT");
+                Contact contact = Contact.fromJson(contents);
+            }
+            catch (NullPointerException e) {
+
+            }
+        }
+    }
 
     public void doBindService() {
         Intent intent = new Intent(this, ServerService.class);
@@ -128,8 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     showNfcLayout();
                     return true;
                 case R.id.navigation_contacts:
-//                    openContactsActivity();
-                    hideAllLayouts();
+                    showContactsLayout();
                     return true;
                 case R.id.navigation_files:
                     showFilesLayout();
@@ -138,55 +191,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent in) {
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, in);
-        if (scanningResult != null) {
-            try {
-                String contents = in.getStringExtra("SCAN_RESULT");
-//                String format = in.getStringExtra("SCAN_RESULT_FORMAT");
-                Contact contact = Contact.fromJson(contents);
-            }
-            catch (NullPointerException e) {
-
-            }
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (serverService == null) {
-            doBindService();
-        }
-
-        setContentView(R.layout.activity_main);
-
-        qrCodeLayout = findViewById(R.id.qrCodeLayout);
-        nfcLayout = findViewById(R.id.nfcLayout);
-        initNfcButtonsListener();
-        filesRecyclerView = findViewById(R.id.filesRecyclerView);
-
-        deviceIdText = findViewById(R.id.deviceIdText);
-        ipAddressText = findViewById(R.id.ipAddressText);
-        qrCodeImage = findViewById(R.id.qrCodeImage);
-
-        showQrLayout();
-
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        sharedPrefs = getSharedPreferences("Contacts", 0);
-        contacts = new ArrayList<>();
-
-        // Load contacts
-        contacts = new Gson().fromJson(sharedPrefs.getString("Contacts", ""), List.class);
-
-        tracker = new Tracker(this);
-        tracker.startTracking(locationListener);
-    }
 
     private void setQrCodeLayoutContent() {
         setDeviceId();
@@ -251,6 +255,13 @@ public class MainActivity extends AppCompatActivity {
         nfcLayout.setVisibility(View.VISIBLE);
     }
 
+    public void showContactsLayout() {
+        hideAllLayouts();
+        ContactsViewHandler contactsView = new ContactsViewHandler(this);
+        contactsView.setContactsRecyclerViewContent();
+        contactsRecyclerView.setVisibility(View.VISIBLE);
+    }
+
     private void showFilesLayout() {
         hideAllLayouts();
         FilesViewHandler filesView = new FilesViewHandler(this);
@@ -261,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
     private void hideAllLayouts() {
         qrCodeLayout.setVisibility(View.GONE);
         nfcLayout.setVisibility(View.GONE);
+        contactsRecyclerView.setVisibility(View.GONE);
         filesRecyclerView.setVisibility(View.GONE);
     }
 
