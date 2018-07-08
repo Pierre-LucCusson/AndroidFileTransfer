@@ -75,6 +75,11 @@ public class Contacts {
         return contacts.get(index);
     }
 
+    public void delete(int index, Activity activity) {
+        contacts.get(index).delete(activity);
+        contacts.remove(index);
+    }
+
     public String toJson() {
         return new Gson().toJson(contacts);
     }

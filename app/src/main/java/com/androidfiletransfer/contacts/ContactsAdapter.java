@@ -46,8 +46,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
     }
 
     public void delete(int position) {
-        Contact contact = contacts.get(position);
-        contact.delete(activity);
+        contacts.delete(position, activity);
         notifyItemRemoved(position);
     }
 
