@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
     private void showContactsLayout() {
         hideAllLayouts();
         ContactsViewHandler contactsView = new ContactsViewHandler(this);
-        contactsView.setContactsRecyclerViewContent();
         contactsRecyclerView.setVisibility(View.VISIBLE);
     }
 

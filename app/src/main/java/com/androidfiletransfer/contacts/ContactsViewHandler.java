@@ -33,9 +33,6 @@ public class ContactsViewHandler {
         contactsRecyclerView.setHasFixedSize(true);
         contactsLayoutManager = new LinearLayoutManager(activity);
         contactsRecyclerView.setLayoutManager(contactsLayoutManager);
-    }
-
-    public void setContactsRecyclerViewContent() {
         contactsAdapter = new ContactsAdapter(contacts, activity);
         contactsRecyclerView.setAdapter(contactsAdapter);
     }

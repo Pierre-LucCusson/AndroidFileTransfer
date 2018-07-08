@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder>{
@@ -61,18 +63,36 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    Contact contact = contacts.get(position);
+//                    openFileDownloadActivity(); // TODO
+                }
+            });
+
             status = (ImageView) itemView.findViewById(R.id.imageViewStatus);
             name = (TextView) itemView.findViewById(R.id.name);
             distance = (TextView) itemView.findViewById(R.id.distance);
             lastAccess = (TextView) itemView.findViewById(R.id.lastAccess);
-            btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
 
+            btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
             btnDelete.setOnClickListener(this);
+            if(activity.getClass() == ContactsActivity.class) {
+                btnDelete.setBackgroundResource(android.R.drawable.ic_menu_save);
+            }
         }
 
         @Override
         public void onClick(View v) {
-            delete(getAdapterPosition());
+            if(activity.getClass() == MainActivity.class) {
+                delete(getAdapterPosition());
+            }
+            else if (activity.getClass() == ContactsActivity.class) {
+                Contact contact = contacts.get(getAdapterPosition());
+                contact.save(activity);
+            }
         }
     }
 

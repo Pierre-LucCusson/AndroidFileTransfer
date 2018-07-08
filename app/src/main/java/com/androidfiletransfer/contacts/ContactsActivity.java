@@ -13,6 +13,5 @@ public class ContactsActivity extends AppCompatActivity {
 
         String contactsInJson = getIntent().getStringExtra("EXTRA_CONTACTS");
         ContactsViewHandler contactsView = new ContactsViewHandler(this, contactsInJson);
-        contactsView.setContactsRecyclerViewContent();
     }
 }
