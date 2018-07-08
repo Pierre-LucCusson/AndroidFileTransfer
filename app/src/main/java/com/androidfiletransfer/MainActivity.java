@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidfiletransfer.contacts.Contact;
+import com.androidfiletransfer.contacts.Contacts;
 import com.androidfiletransfer.contacts.ContactsActivity;
 import com.androidfiletransfer.contacts.ContactsViewHandler;
 import com.androidfiletransfer.files.FilesViewHandler;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public ServiceConnection myConnection = new ServiceConnection() {
+    private ServiceConnection myConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName className, IBinder binder) {
             serverService = ((ServerService.MyBinder) binder).getService();
@@ -138,8 +139,7 @@ public class MainActivity extends AppCompatActivity {
         if (scanningResult != null) {
             try {
                 String contents = in.getStringExtra("SCAN_RESULT");
-//                String format = in.getStringExtra("SCAN_RESULT_FORMAT");
-                Contact contact = Contact.fromJson(contents);
+                Contact.fromJson(contents).save(this);
             }
             catch (NullPointerException e) {
 
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void doBindService() {
+    private void doBindService() {
         Intent intent = new Intent(this, ServerService.class);
         bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
     }
@@ -162,23 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     showQrLayout();
                     return true;
                 case R.id.navigation_qr_scanner:
-                    hideAllLayouts();
-
-                    /*
-                    Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                    intent.setPackage("com.androidfiletransfer");
-                    intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-                    startActivityForResult(intent, 0);
-                    */
-
-                    IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
-                    scanIntegrator.setDesiredBarcodeFormats(Arrays.asList(BarcodeFormat.QR_CODE.toString()));
-                    scanIntegrator.setCameraId(0);
-                    scanIntegrator.setBeepEnabled(true);
-                    scanIntegrator.setBarcodeImageEnabled(false);
-                    scanIntegrator.initiateScan();
-
-
+                    openScanQrCodeActivity();
                     return true;
                 case R.id.navigation_nfc:
                     showNfcLayout();
@@ -198,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
         setDeviceId();
         setIdAddress();
         setQrCodeImage();
-
     }
 
     private void setDeviceId() {
@@ -229,7 +212,17 @@ public class MainActivity extends AppCompatActivity {
         qrCodeLayout.setVisibility(View.VISIBLE);
     }
 
-    public void initNfcButtonsListener() {
+    private void openScanQrCodeActivity() {
+        hideAllLayouts();
+        IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
+        scanIntegrator.setDesiredBarcodeFormats(Arrays.asList(BarcodeFormat.QR_CODE.toString()));
+        scanIntegrator.setCameraId(0);
+        scanIntegrator.setBeepEnabled(true);
+        scanIntegrator.setBarcodeImageEnabled(false);
+        scanIntegrator.initiateScan();
+    }
+
+    private void initNfcButtonsListener() {
         findViewById(R.id.nfcSendButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -257,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
         nfcLayout.setVisibility(View.VISIBLE);
     }
 
-    public void showContactsLayout() {
+    private void showContactsLayout() {
         hideAllLayouts();
         ContactsViewHandler contactsView = new ContactsViewHandler(this);
         contactsView.setContactsRecyclerViewContent();
@@ -280,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openNfcSendActivity() {
         Intent intentNfcSend = new Intent(MainActivity.this, NfcSendActivity.class);
-        String msgNfcToSend = new Contact("deviceTest", "192.188.0.1").toJson();    //TODO replace With the contact that need to be transfer
+        String msgNfcToSend = new Contacts(this).toJson();
         intentNfcSend.putExtra("EXTRA_NFC_CONTACT_TO_SEND", msgNfcToSend);
         startActivity(intentNfcSend);
     }
@@ -292,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openContactsActivity() {
         Intent intentContacts = new Intent(MainActivity.this, ContactsActivity.class);
+        intentContacts.putExtra("EXTRA_CONTACTS", new Contacts().toJson());
         startActivity(intentContacts);
     }
 

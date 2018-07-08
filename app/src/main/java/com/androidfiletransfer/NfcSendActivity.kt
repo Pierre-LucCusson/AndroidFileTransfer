@@ -29,7 +29,9 @@ class NfcSendActivity : AppCompatActivity() {
         ndefMessage = NdefMessage(
                 arrayOf(getNdefRecord(msgNfcToSend, Locale.ENGLISH, true)))
 
-//        nfcAdapter?.setNdefPushMessage(ndefMessage, this)
+        nfcAdapter?.setNdefPushMessage(ndefMessage, this)
+
+//        finish()
     }
 
     private fun getNdefRecord(ndefMessage: String, locale: Locale, encodeInUtf8: Boolean): NdefRecord {
@@ -47,16 +49,6 @@ class NfcSendActivity : AppCompatActivity() {
         System.arraycopy(textBytes, 0, data, 1 + langBytes.size, textBytes.size)
 
         return NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, ByteArray(0), data)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        nfcAdapter?.enableForegroundNdefPush(this, ndefMessage)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        nfcAdapter?.disableForegroundNdefPush(this)
     }
 
 }

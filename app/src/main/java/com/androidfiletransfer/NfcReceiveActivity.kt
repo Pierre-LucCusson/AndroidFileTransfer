@@ -12,6 +12,7 @@ import android.nfc.tech.NfcF
 import android.nfc.NdefRecord
 import android.nfc.NdefMessage
 import android.nfc.Tag
+import com.androidfiletransfer.contacts.ContactsActivity
 import java.util.*
 import kotlin.experimental.and
 
@@ -49,7 +50,7 @@ class NfcReceiveActivity : AppCompatActivity() {
         val action = intent.action
         val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
 
-        var s = ""
+        var messageReceived = ""
 
         // parse through all NDEF messages and their records and pick text type only
         val data = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES)
@@ -63,7 +64,7 @@ class NfcReceiveActivity : AppCompatActivity() {
 
                             val langCodeLen = payload[0] and 63
 
-                            s += String(payload, langCodeLen + 1, payload.size - langCodeLen - 1, TextEncoding().getCharset(payload[0]))
+                            messageReceived += String(payload, langCodeLen + 1, payload.size - langCodeLen - 1, TextEncoding().getCharset(payload[0]))
                         }
                     }
                 }
@@ -73,7 +74,9 @@ class NfcReceiveActivity : AppCompatActivity() {
 
         }
 
-        Toast.makeText(this, "The NFC message received is: $s", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "The NFC message received is: $messageReceived", Toast.LENGTH_LONG).show()
+
+        openFriendsContactsActivity(messageReceived)
     }
 
     override fun onResume() {
@@ -84,6 +87,13 @@ class NfcReceiveActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         nfcAdapter?.disableForegroundDispatch(this)
+    }
+
+    private fun openFriendsContactsActivity(contactsInJson : String) {
+        val intentContacts = Intent(this, ContactsActivity::class.java)
+        intentContacts.putExtra("EXTRA_CONTACTS", contactsInJson)
+        startActivity(intentContacts)
+        finish()
     }
 
 }

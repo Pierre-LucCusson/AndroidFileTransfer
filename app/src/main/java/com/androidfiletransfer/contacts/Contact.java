@@ -1,10 +1,8 @@
 package com.androidfiletransfer.contacts;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
-
 import com.google.gson.Gson;
-
-import java.util.List;
 
 public class Contact {
 
@@ -33,10 +31,6 @@ public class Contact {
 
     public String getDeviceId() {
         return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     public String getIpAddress() {
@@ -82,25 +76,16 @@ public class Contact {
                 '}';
     }
 
-    public void add(SharedPreferences sharedPreferences, List contacts) {
-        // Add current contact to the list
-        contacts.add(this);
 
-        save(sharedPreferences, contacts);
+    public void save(Activity activity) {
+        SharedPreferences.Editor editor = activity.getSharedPreferences("Contacts", 0).edit();
+        editor.putString(deviceId, toJson());
+        editor.commit();
     }
 
-    public void delete(SharedPreferences sharedPreferences, List contacts) {
-        // Remove current contact from the list
-        contacts.remove(this);
-
-        save(sharedPreferences, contacts);
-    }
-
-    public void save(SharedPreferences sharedPreferences, List contacts) {
-        // Save the contacts list in shared preferences
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.putString("Contacts", new Gson().toJson(contacts));
+    public void delete(Activity activity) {
+        SharedPreferences.Editor editor = activity.getSharedPreferences("Contacts", 0).edit();
+        editor.remove(deviceId);
         editor.commit();
     }
 

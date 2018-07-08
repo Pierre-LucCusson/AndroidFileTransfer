@@ -1,7 +1,6 @@
 package com.androidfiletransfer.contacts;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +8,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.androidfiletransfer.R;
-
-import java.util.List;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder>{
 
-    private List<Contact> contacts;
+    private Contacts contacts;
     private Activity activity;
-    private SharedPreferences sharedPreferences;
 
-    public ContactsAdapter(List<Contact> contacts, Activity activity, SharedPreferences sharedPreferences) {
+    public ContactsAdapter(Contacts contacts, Activity activity) {
         this.contacts = contacts;
         this.activity = activity;
-        this.sharedPreferences = sharedPreferences;
     }
 
     @Override
@@ -48,12 +42,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return contacts.size();
+        return contacts.get().size();
     }
 
     public void delete(int position) {
         Contact contact = contacts.get(position);
-        contact.delete(sharedPreferences, contacts);
+        contact.delete(activity);
         notifyItemRemoved(position);
     }
 
