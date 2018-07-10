@@ -17,9 +17,40 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
     private Contacts contacts;
     private Activity activity;
 
-    public ContactsAdapter(Contacts contacts, Activity activity) {
+    private Button btnSortIpAddress, btnSortDistance, btnSortLastLogin;
+
+    public ContactsAdapter(final Contacts contacts, Activity activity) {
         this.contacts = contacts;
         this.activity = activity;
+
+        btnSortIpAddress = activity.findViewById(R.id.btnSortIP);
+        btnSortDistance = activity.findViewById(R.id.btnSortDistance);
+        btnSortLastLogin = activity.findViewById(R.id.btnSortLastLogin);
+
+        btnSortIpAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.orderByIpAddress();
+                notifyDataSetChanged();
+            }
+        });
+
+        btnSortDistance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.orderByDistance();
+                notifyDataSetChanged();
+            }
+        });
+
+        btnSortLastLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.orderByLastLogin();
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override

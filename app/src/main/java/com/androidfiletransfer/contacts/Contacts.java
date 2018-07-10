@@ -2,14 +2,17 @@ package com.androidfiletransfer.contacts;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class Contacts {
+public class Contacts implements Comparable<Contact> {
 
     private List<Contact> contacts;
 
@@ -82,5 +85,47 @@ public class Contacts {
 
     public String toJson() {
         return new Gson().toJson(contacts);
+    }
+
+    @Override
+    public int compareTo(Contact contactToCompareWith) {
+        return compareTo(contactToCompareWith);
+    }
+
+    public void orderByIpAddress() {
+
+        Arrays.sort(getContactArray(), new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contactA, Contact contactB) {
+                return contactA.getIpAddress().compareTo(contactB.getIpAddress());
+            }
+        });
+    }
+
+    public void orderByDistance() {
+
+        Arrays.sort(getContactArray(), new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contactA, Contact contactB) {
+                return (String.valueOf(contactA.getDistance())).compareTo(String.valueOf(contactB.getDistance()));
+            }
+        });
+    }
+
+    public void orderByLastLogin() {
+
+        Arrays.sort(getContactArray(), new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contactA, Contact contactB) {
+                return (String.valueOf(contactA.getLastLogin())).compareTo(String.valueOf(contactB.getLastLogin()));
+            }
+        });
+    }
+
+    public Contact[] getContactArray() {
+        Contact[] contactsArray = new Contact[contacts.size()];
+        contactsArray = contacts.toArray(contactsArray);
+
+        return contactsArray;
     }
 }

@@ -3,6 +3,7 @@ package com.androidfiletransfer.contacts;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
 

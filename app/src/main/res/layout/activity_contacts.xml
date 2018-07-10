@@ -4,6 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/contacts_layout" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/rlSortButtons"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="Sort by IP"
+            android:id="@+id/btnSortIP"/>
+        <Button android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Sort by Distance"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:id="@+id/btnSortDistance"
+            />
+        <Button android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Sort by Last login"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:id="@+id/btnSortLastLogin"
+            />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlSortButtons">
+        <include layout="@layout/contacts_layout" />
+    </RelativeLayout>
 
 </RelativeLayout>
