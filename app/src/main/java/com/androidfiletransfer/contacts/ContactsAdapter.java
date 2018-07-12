@@ -89,7 +89,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         TextView name;
         TextView distance;
         TextView lastAccess;
-        Button btnDelete;
+        Button saveOrDdeleteButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -108,21 +108,22 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
             distance = (TextView) itemView.findViewById(R.id.distance);
             lastAccess = (TextView) itemView.findViewById(R.id.lastAccess);
 
-            btnDelete = (Button) itemView.findViewById(R.id.btnDelete);
-            btnDelete.setOnClickListener(this);
+            saveOrDdeleteButton = (Button) itemView.findViewById(R.id.btnDelete);
+            saveOrDdeleteButton.setOnClickListener(this);
             if(activity.getClass() == ContactsActivity.class) {
-                btnDelete.setBackgroundResource(android.R.drawable.ic_menu_save);
+                saveOrDdeleteButton.setBackgroundResource(android.R.drawable.ic_menu_save);
             }
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view) {
             if(activity.getClass() == MainActivity.class) {
                 delete(getAdapterPosition());
             }
             else if (activity.getClass() == ContactsActivity.class) {
                 Contact contact = contacts.get(getAdapterPosition());
                 contact.save(activity);
+                view.setVisibility(View.GONE);
             }
         }
     }
