@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RelativeLayout qrCodeLayout;
     private RelativeLayout nfcLayout;
-    private RecyclerView contactsRecyclerView;
+    private RelativeLayout contactsLayout;
     private RecyclerView filesRecyclerView;
 
     private TextView deviceIdText;
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         nfcLayout = findViewById(R.id.nfcLayout);
         initNfcButtonsListener();
 
-        contactsRecyclerView = findViewById(R.id.contactsRecyclerView);
+        contactsLayout = findViewById(R.id.contactsLayout);
         filesRecyclerView = findViewById(R.id.filesRecyclerView);
 
         showQrLayout();
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
     private void showContactsLayout() {
         hideAllLayouts();
         ContactsViewHandler contactsView = new ContactsViewHandler(this);
-        contactsRecyclerView.setVisibility(View.VISIBLE);
+        contactsLayout.setVisibility(View.VISIBLE);
     }
 
     private void showFilesLayout() {
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
     private void hideAllLayouts() {
         qrCodeLayout.setVisibility(View.GONE);
         nfcLayout.setVisibility(View.GONE);
-        contactsRecyclerView.setVisibility(View.GONE);
+        contactsLayout.setVisibility(View.GONE);
         filesRecyclerView.setVisibility(View.GONE);
     }
 

@@ -5,5 +5,6 @@
     <dimen name="qr_margin">10dp</dimen>
     <dimen name="nfc_button_margin">30dp</dimen>
     <dimen name="file_item_margin">10dp</dimen>
+    <dimen name="sort_button_margin">3dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>

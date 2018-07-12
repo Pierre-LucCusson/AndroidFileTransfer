@@ -1,8 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contactsRecyclerView"
-    android:scrollbars="vertical"
+    android:id="@+id/contactsLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:showIn="@layout/activity_contacts" />
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/rlSortButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSortIP"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/sort_button_margin"
+            android:background="@color/colorButton"
+            android:textColor="@color/colorWhite"
+            android:text="Sort by IP" />
+
+        <Button
+            android:id="@+id/btnSortDistance"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Sort by Distance"
+            android:layout_margin="@dimen/sort_button_margin"
+            android:background="@color/colorButton"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btnSortLastLogin"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text="Sort by Last login"
+            android:layout_margin="@dimen/sort_button_margin"
+            android:background="@color/colorButton"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/contactsRecyclerView"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rlSortButtons"
+        tools:showIn="@layout/activity_contacts" />
+
+    </RelativeLayout>
