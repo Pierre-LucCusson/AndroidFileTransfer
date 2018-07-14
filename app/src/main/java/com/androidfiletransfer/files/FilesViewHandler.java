@@ -39,9 +39,8 @@ public class FilesViewHandler {
         filesRecyclerView.setAdapter(filesAdapter);
     }
 
-    private String[] getFiles() {
-        String[] myFiles = {"My 1st File", "My 2nd File", "My 3rd File"}; //TODO
-        return myFiles;
+    private Files getFiles() {
+        return new Files();
     }
 
 }
