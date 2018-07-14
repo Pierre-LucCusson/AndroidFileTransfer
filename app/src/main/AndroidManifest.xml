@@ -20,8 +20,8 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:enabled="true"
-            android:name=".connection.ServerService"/>
+            android:name=".connection.ServerService"
+            android:enabled="true" />
 
         <activity
             android:name=".MainActivity"
@@ -43,10 +43,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NfcReceiveActivity"
-            android:label="@string/title_activity_nfc_receive"></activity>
+            android:label="@string/title_activity_nfc_receive" />
         <activity
             android:name=".contacts.ContactsActivity"
-            android:label="@string/title_activity_contacts_list"></activity>
+            android:label="@string/title_activity_contacts_list" />
+        <activity
+            android:name=".files.FilesActivity"
+            android:label="@string/title_activity_files"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

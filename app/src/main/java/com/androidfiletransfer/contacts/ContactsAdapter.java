@@ -1,6 +1,7 @@
 package com.androidfiletransfer.contacts;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
+import com.androidfiletransfer.files.FilesActivity;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder>{
 
@@ -89,7 +91,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         TextView name;
         TextView distance;
         TextView lastAccess;
-        Button saveOrDdeleteButton;
+        Button saveOrDeleteButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -99,19 +101,19 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     Contact contact = contacts.get(position);
-//                    openFileDownloadActivity(); // TODO
+                    openFileActivity();
                 }
             });
 
-            status = (ImageView) itemView.findViewById(R.id.imageViewStatus);
-            name = (TextView) itemView.findViewById(R.id.name);
-            distance = (TextView) itemView.findViewById(R.id.distance);
-            lastAccess = (TextView) itemView.findViewById(R.id.lastAccess);
+            status = itemView.findViewById(R.id.imageViewStatus);
+            name = itemView.findViewById(R.id.name);
+            distance = itemView.findViewById(R.id.distance);
+            lastAccess = itemView.findViewById(R.id.lastAccess);
 
-            saveOrDdeleteButton = (Button) itemView.findViewById(R.id.btnDelete);
-            saveOrDdeleteButton.setOnClickListener(this);
+            saveOrDeleteButton = itemView.findViewById(R.id.btnDelete);
+            saveOrDeleteButton.setOnClickListener(this);
             if(activity.getClass() == ContactsActivity.class) {
-                saveOrDdeleteButton.setBackgroundResource(android.R.drawable.ic_menu_save);
+                saveOrDeleteButton.setBackgroundResource(android.R.drawable.ic_menu_save);
             }
         }
 
@@ -126,6 +128,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
                 view.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void openFileActivity() {
+        Intent intentFiles = new Intent(activity, FilesActivity.class);
+//        intentFiles.putExtra("EXTRA_FILES", new ContactsFiles().toJson()); //TODO get contacts files with server
+        activity.startActivity(intentFiles);
     }
 
 }
