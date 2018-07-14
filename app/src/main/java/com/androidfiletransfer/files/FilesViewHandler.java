@@ -39,8 +39,8 @@ public class FilesViewHandler {
         filesRecyclerView.setAdapter(filesAdapter);
     }
 
-    private Files getFiles() {
-        return new Files();
+    private MyFiles getFiles() {
+        return new MyFiles();
     }
 
 }

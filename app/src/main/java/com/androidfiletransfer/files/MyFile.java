@@ -2,18 +2,33 @@ package com.androidfiletransfer.files;
 
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class File {
+
+public class MyFile {
 
     private String fileName;
     private String path ;
-    private List<File> files;
+    private List<MyFile> files;
+    private transient boolean isOpen = false;
 
-    public File(String fileName, String path, List<File> files) {
+    public MyFile(String fileName, String path, List<MyFile> files) {
         this.fileName = fileName;
         this.path = path;
         this.files = files;
+    }
+
+    public MyFile(File file) {
+        fileName = file.getName();
+        path = file.getPath();
+        if(file.isDirectory()) {
+            files = new ArrayList<>();
+        }
+        else {
+            files = null;
+        }
     }
 
     public String toJson() {
@@ -36,11 +51,20 @@ public class File {
         this.path = path;
     }
 
-    public List<File> getFiles() {
+    public List<MyFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(List<MyFile> files) {
         this.files = files;
     }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void toggleOpen() {
+        isOpen = !isOpen;
+    }
+
 }

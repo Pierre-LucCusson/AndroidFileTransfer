@@ -1,11 +1,13 @@
 package com.androidfiletransfer.files;
 
 import android.app.Activity;
+import android.opengl.Visibility;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidfiletransfer.MainActivity;
@@ -14,9 +16,9 @@ import com.androidfiletransfer.R;
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder> {
 
     private Activity activity;
-    private Files files;
+    private MyFiles files;
 
-    public FilesAdapter(Files files, Activity activity) {
+    public FilesAdapter(MyFiles files, Activity activity) {
         this.activity = activity;
         this.files = files;
 
@@ -29,11 +31,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int index) {
-        myViewHolder.setFileText(files.get(index).getFileName());
 
-        if (activity.getClass() == MainActivity.class) {
-            myViewHolder.setDownloadButtonVisibilityToGone();
-        }
+        MyFile myFile = files.get(index);
+
+        myViewHolder.setFileText(myFile.getFileName());
+
+        myViewHolder.setDownloadButtonVisibility(myFile);
+        myViewHolder.setFileLogoTypeVisibility(myFile);
     }
 
     @Override
@@ -43,12 +47,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        private ImageView fileLogoTypeView;
         private TextView fileText;
         private ImageButton downloadButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            fileLogoTypeView = itemView.findViewById(R.id.fileLogoTypeView);
             fileText = itemView.findViewById(R.id.fileText);
             downloadButton = itemView.findViewById(R.id.downloadButton);
         }
@@ -62,8 +68,27 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
             fileText.setText(text);
         }
 
-        public void setDownloadButtonVisibilityToGone() {
-            downloadButton.setVisibility(View.GONE);
+        public void setDownloadButtonVisibility(MyFile myFile) {
+            if (activity.getClass() == MainActivity.class) {
+                downloadButton.setVisibility(View.GONE);
+            }
+            else {
+                if(myFile.getFiles() == null) {
+                    downloadButton.setVisibility(View.VISIBLE);
+                }
+                else {
+                    downloadButton.setVisibility(View.GONE);
+                }
+            }
+        }
+
+        public void setFileLogoTypeVisibility(MyFile myFile) {
+            if(myFile.getFiles() == null) {
+                fileLogoTypeView.setVisibility(View.GONE);
+            }
+            else {
+                fileLogoTypeView.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
