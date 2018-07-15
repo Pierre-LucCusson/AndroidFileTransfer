@@ -20,8 +20,28 @@ public class MyFiles {
         return myFiles;
     }
 
-    public MyFile get(int index) {
-        return myFiles.get(index);
+    public MyFile getFileAt(int position) {
+        if (position != 0) {
+            int filePosition = 0;
+            for (MyFile myFile : myFiles) {
+                if (myFile.isOpen()) {
+                    if (filePosition + myFile.size() > position) {
+                        return myFile.getFileAt(position - filePosition);
+                    } else {
+                        filePosition += myFile.size();
+                    }
+                } else {
+                    if(filePosition == position) {
+                        return myFile;
+                    }
+                    else {
+                        filePosition++;
+                    }
+                }
+
+            }
+        }
+        return myFiles.get(0);
     }
 
     private void setMyFiles() {
@@ -31,10 +51,19 @@ public class MyFiles {
         }
     }
 
-
     private File[] getFilesFromDirectoryDownload() {
 
         File downloadFolder = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)));
         return downloadFolder.listFiles();
+    }
+
+    public int size() {
+        int totalAmountOfFiles = 0;
+
+        for (MyFile myFile : myFiles) {
+            totalAmountOfFiles += myFile.size();
+        }
+
+        return totalAmountOfFiles;
     }
 }

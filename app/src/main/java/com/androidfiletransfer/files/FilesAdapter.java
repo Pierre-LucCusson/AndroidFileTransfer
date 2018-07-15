@@ -21,7 +21,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
     public FilesAdapter(MyFiles files, Activity activity) {
         this.activity = activity;
         this.files = files;
-
     }
 
     @Override
@@ -32,7 +31,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int index) {
 
-        MyFile myFile = files.get(index);
+        MyFile myFile = files.getFileAt(index);
 
         myViewHolder.setFileText(myFile.getFileName());
 
@@ -42,7 +41,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
     @Override
     public int getItemCount() {
-        return files.get().size();
+        return files.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -57,6 +56,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
             fileLogoTypeView = itemView.findViewById(R.id.fileLogoTypeView);
             fileText = itemView.findViewById(R.id.fileText);
             downloadButton = itemView.findViewById(R.id.downloadButton);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onFileClick(getAdapterPosition());
+                }
+            });
         }
 
         @Override
@@ -89,6 +95,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
             else {
                 fileLogoTypeView.setVisibility(View.VISIBLE);
             }
+        }
+    }
+
+    private void onFileClick(int filePosition) {
+        MyFile myFile = files.getFileAt(filePosition);
+        if (myFile.getFiles() != null) {
+            myFile.toggleOpen();
+            notifyDataSetChanged();
         }
     }
 }

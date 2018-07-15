@@ -25,6 +25,9 @@ public class MyFile {
         path = file.getPath();
         if(file.isDirectory()) {
             files = new ArrayList<>();
+            for (File innerFile : file.listFiles()) {
+                files.add(new MyFile(innerFile));
+            }
         }
         else {
             files = null;
@@ -65,6 +68,43 @@ public class MyFile {
 
     public void toggleOpen() {
         isOpen = !isOpen;
+    }
+
+    public int size() {
+        int totalAmountOfFiles = 1;
+
+        if (files != null && isOpen) {
+            for (MyFile file : files) {
+                totalAmountOfFiles += file.size();
+            }
+        }
+
+        return totalAmountOfFiles;
+    }
+
+    public MyFile getFileAt(int position) {
+
+        if (position != 0) {
+            int filePosition = 0;
+            for (MyFile myFile : files) {
+                if (myFile.isOpen()) {
+                    if (filePosition + myFile.size() > position) {
+                        return myFile.getFileAt(position - filePosition);
+                    } else {
+                        filePosition += myFile.size();
+                    }
+                } else {
+                    if(filePosition == position) {
+                        return myFile;
+                    }
+                    else {
+                        filePosition++;
+                    }
+                }
+
+            }
+        }
+        return this;
     }
 
 }
