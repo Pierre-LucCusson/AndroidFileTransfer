@@ -1,6 +1,10 @@
 package com.androidfiletransfer.files;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,6 +119,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
     private void downloadFile(int filePosition) {
         MyFile myFile = files.getFileAt(filePosition);
-//        myFile.getPath(); //TODO send command to server to download this file
+//        Uri fileUri = Uri.parse("we need the server url of the contact" + myFile.getPath()); // TODO should replace the bellow line
+        Uri fileUri = Uri.parse("https://2017.brucon.org/images/b/bc/Twitter_logo.jpg");
+
+        DownloadManager downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(fileUri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "twitter.jpg"/*myFile.getFileName()*/);
+        downloadManager.enqueue(request);
+
     }
 }
