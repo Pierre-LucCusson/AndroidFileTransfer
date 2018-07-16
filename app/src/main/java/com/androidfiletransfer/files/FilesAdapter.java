@@ -53,21 +53,23 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
+
             fileLogoTypeView = itemView.findViewById(R.id.fileLogoTypeView);
             fileText = itemView.findViewById(R.id.fileText);
             downloadButton = itemView.findViewById(R.id.downloadButton);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
+            downloadButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onFileClick(getAdapterPosition());
+                    downloadFile(getAdapterPosition());
                 }
+
             });
         }
 
         @Override
         public void onClick(View v) {
-//            getAdapterPosition(); //TODO should download the file
+            onFileClick(getAdapterPosition());
         }
 
         public void setFileText(String text) {
@@ -104,5 +106,10 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
             myFile.toggleOpen();
             notifyDataSetChanged();
         }
+    }
+
+    private void downloadFile(int filePosition) {
+        MyFile myFile = files.getFileAt(filePosition);
+//        myFile.getPath(); //TODO send command to server to download this file
     }
 }

@@ -85,7 +85,7 @@ public class MyFile {
     public MyFile getFileAt(int position) {
 
         if (position != 0) {
-            int filePosition = 0;
+            int filePosition = 1;
             for (MyFile myFile : files) {
                 if (myFile.isOpen()) {
                     if (filePosition + myFile.size() > position) {
