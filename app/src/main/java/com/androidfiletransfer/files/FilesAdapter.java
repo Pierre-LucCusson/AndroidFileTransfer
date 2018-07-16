@@ -20,6 +20,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
     public FilesAdapter(MyFile files, Activity activity) {
         this.activity = activity;
         this.files = files;
+//        if(activity.getClass() == MainActivity.class) {
+//            //add folder listener
+//            if(newFileOrFolderIsDetectedInDirectoryDownload) { // TODO add listener for detection of new file or folder
+//                files = MyFile.getFileInstanceFromDirectoryDownload();
+//            }
+//        }
     }
 
     @Override
