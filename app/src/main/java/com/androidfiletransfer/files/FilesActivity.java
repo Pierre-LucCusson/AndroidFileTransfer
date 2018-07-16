@@ -1,11 +1,8 @@
 package com.androidfiletransfer.files;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.androidfiletransfer.R;
 
@@ -18,8 +15,12 @@ public class FilesActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        String contactsFilesInJson = getIntent().getStringExtra("EXTRA_FILES");
+        MyFile contactsFiles = MyFile.getFilesWith(contactsFilesInJson);
+//        MyFile contactsFiles = MyFile.getFileInstanceFromDirectoryDownload(); //For debugging/testing
+
         FilesViewHandler filesView = new FilesViewHandler(this);
-        filesView.setFilesRecyclerViewContent();
+        filesView.setFilesRecyclerViewContentWith(contactsFiles);
     }
 
 }

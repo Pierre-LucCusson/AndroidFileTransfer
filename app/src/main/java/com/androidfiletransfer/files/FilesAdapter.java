@@ -1,7 +1,6 @@
 package com.androidfiletransfer.files;
 
 import android.app.Activity;
-import android.opengl.Visibility;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +15,9 @@ import com.androidfiletransfer.R;
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder> {
 
     private Activity activity;
-    private MyFiles files;
+    private MyFile files;
 
-    public FilesAdapter(MyFiles files, Activity activity) {
+    public FilesAdapter(MyFile files, Activity activity) {
         this.activity = activity;
         this.files = files;
     }

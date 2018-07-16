@@ -8,6 +8,7 @@ class ServerCommand {
         const val GET_FILES_LIST = "/get_files_list"
         const val GET_FILE = "/get_file"
         const val GET_LOCATION = "/get_location"
+        const val FILE_NOT_FOUND = "/file_not_found"
         const val DOES_NOT_EXIST = "/command_does_not_exist"
     }
 

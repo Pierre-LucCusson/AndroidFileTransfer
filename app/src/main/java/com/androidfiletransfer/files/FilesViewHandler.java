@@ -34,13 +34,17 @@ public class FilesViewHandler {
 
     }
 
-    public void setFilesRecyclerViewContent() {
+    public void setFilesRecyclerViewContentWithMyFiles() {
         filesAdapter = new FilesAdapter(getFiles(), activity);
         filesRecyclerView.setAdapter(filesAdapter);
     }
+    public void setFilesRecyclerViewContentWith(MyFile file) {
+        filesAdapter = new FilesAdapter(file, activity);
+        filesRecyclerView.setAdapter(filesAdapter);
+    }
 
-    private MyFiles getFiles() {
-        return new MyFiles();
+    private MyFile getFiles() {
+        return MyFile.getFileInstanceFromDirectoryDownload();
     }
 
 }

@@ -1,5 +1,11 @@
 package com.androidfiletransfer.connection;
 
+import com.androidfiletransfer.files.MyFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import fi.iki.elonen.NanoHTTPD;
 
 public class Server extends NanoHTTPD {
@@ -25,7 +31,7 @@ public class Server extends NanoHTTPD {
                 case ServerCommand.GET_FILES_LIST:
                     return getFilesList();
                 case ServerCommand.GET_FILE:
-                    return getFile();
+                    return getFile(session);
                 case ServerCommand.GET_LOCATION:
                     return getLocation();
                 default:
@@ -38,19 +44,30 @@ public class Server extends NanoHTTPD {
     }
 
     public Response getContactsList() {
-        return newFixedLengthResponse(ServerCommand.GET_CONTACTS_LIST); //TODO
+        return newFixedLengthResponse(ServerCommand.GET_CONTACTS_LIST); //TODO maybe not
     }
 
     public Response getContact() {
-        return newFixedLengthResponse(ServerCommand.GET_CONTACT); //TODO
+        return newFixedLengthResponse(ServerCommand.GET_CONTACT); //TODO maybe not
     }
 
     public Response getFilesList() {
-        return newFixedLengthResponse(ServerCommand.GET_FILES_LIST); //TODO
+        return newFixedLengthResponse(MyFile.getFileInstanceFromDirectoryDownload().toJson());
     }
 
-    public Response getFile() {
-        return newFixedLengthResponse(ServerCommand.GET_FILE); //TODO
+    public Response getFile(IHTTPSession session) {
+
+        String[] uriSection = session.getUri().split(ServerCommand.GET_FILE + "/");
+
+        File file = new File(uriSection[uriSection.length - 1]);
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            return newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, fileInputStream, file.length());
+//            return newFixedLengthResponse(fileInputStream.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return newFixedLengthResponse(ServerCommand.FILE_NOT_FOUND); //TODO to test
     }
 
     public Response getLocation() {

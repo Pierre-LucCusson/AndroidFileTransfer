@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
     private void showFilesLayout() {
         hideAllLayouts();
         FilesViewHandler filesView = new FilesViewHandler(this);
-        filesView.setFilesRecyclerViewContent();
+        filesView.setFilesRecyclerViewContentWithMyFiles();
         filesLayout.setVisibility(View.VISIBLE);
     }
 

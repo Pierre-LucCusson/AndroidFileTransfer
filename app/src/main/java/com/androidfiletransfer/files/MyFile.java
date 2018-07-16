@@ -1,5 +1,7 @@
 package com.androidfiletransfer.files;
 
+import android.os.Environment;
+
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -13,6 +15,18 @@ public class MyFile {
     private String path ;
     private List<MyFile> files;
     private transient boolean isOpen = false;
+
+    private MyFile() {
+        File[] internalFiles = getFilesFromDirectoryDownload();
+        files = new ArrayList<>();
+        for (File internalFile : internalFiles) {
+            files.add(new MyFile(internalFile));
+        }
+    }
+
+    public static MyFile getFileInstanceFromDirectoryDownload() {
+        return new MyFile();
+    }
 
     public MyFile(String fileName, String path, List<MyFile> files) {
         this.fileName = fileName;
@@ -32,6 +46,15 @@ public class MyFile {
         else {
             files = null;
         }
+    }
+
+    public static MyFile getFilesWith(String filesInJson) {
+        return new Gson().fromJson(filesInJson, MyFile.class);
+    }
+
+    private File[] getFilesFromDirectoryDownload() {
+        File downloadFolder = new File(String.valueOf(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)));
+        return downloadFolder.listFiles();
     }
 
     public String toJson() {
@@ -71,7 +94,17 @@ public class MyFile {
     }
 
     public int size() {
-        int totalAmountOfFiles = 1;
+        int totalAmountOfFiles = 0;
+        if (fileName != null) {
+            totalAmountOfFiles++;
+        }
+        else {
+            if (files != null) {
+                for (MyFile file : files) {
+                    totalAmountOfFiles += file.size();
+                }
+            }
+        }
 
         if (files != null && isOpen) {
             for (MyFile file : files) {
@@ -85,7 +118,10 @@ public class MyFile {
     public MyFile getFileAt(int position) {
 
         if (position != 0) {
-            int filePosition = 1;
+            int filePosition = 0;
+            if(fileName != null) {
+                filePosition++;
+            }
             for (MyFile myFile : files) {
                 if (myFile.isOpen()) {
                     if (filePosition + myFile.size() > position) {
@@ -102,6 +138,14 @@ public class MyFile {
                     }
                 }
 
+            }
+        }
+        else {
+            if (fileName == null) {
+                return files.get(0);
+            }
+            else {
+                return this;
             }
         }
         return this;

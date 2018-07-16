@@ -9,10 +9,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
+import com.androidfiletransfer.connection.Client;
+import com.androidfiletransfer.connection.ServerCommand;
 import com.androidfiletransfer.files.FilesActivity;
+import com.androidfiletransfer.files.MyFile;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder>{
 
@@ -101,7 +105,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     Contact contact = contacts.get(position);
-                    openFileActivity();
+                    openFileActivityWithFilesOf(contact);
                 }
             });
 
@@ -130,10 +134,29 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         }
     }
 
-    private void openFileActivity() {
+    private void openFileActivityWithFilesOf(Contact contact) {
         Intent intentFiles = new Intent(activity, FilesActivity.class);
-//        intentFiles.putExtra("EXTRA_FILES", new ContactsFiles().toJson()); //TODO get contacts files with server
-        activity.startActivity(intentFiles);
+
+//        String filesInJson = MyFile.getFileInstanceFromDirectoryDownload().toJson(); //For debugging/testing
+        String filesInJson = new Client(contact.getIpAddress()).run(ServerCommand.GET_FILES_LIST); //TODO need to be tested
+
+        if (filesInJson == null) {
+            if (contact.isOnline()) {
+                contact.setOnline(false);
+                contact.save(activity);
+                notifyDataSetChanged();
+            }
+            Toast.makeText(activity.getApplicationContext(), "The contact is offline." ,Toast.LENGTH_LONG).show();
+        }
+        else {
+            if (!contact.isOnline()) {
+                contact.setOnline(true);
+                contact.save(activity);
+                notifyDataSetChanged();
+            }
+            intentFiles.putExtra("EXTRA_FILES", filesInJson);
+            activity.startActivity(intentFiles);
+        }
     }
 
 }
