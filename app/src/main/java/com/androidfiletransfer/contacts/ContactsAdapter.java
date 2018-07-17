@@ -2,6 +2,7 @@ package com.androidfiletransfer.contacts;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +14,13 @@ import android.widget.Toast;
 
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
+import com.androidfiletransfer.Tracker;
 import com.androidfiletransfer.connection.Client;
 import com.androidfiletransfer.connection.ServerCommand;
 import com.androidfiletransfer.files.FilesActivity;
 import com.androidfiletransfer.files.MyFile;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder>{
 
@@ -139,6 +143,23 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
 //        String filesInJson = MyFile.getFileInstanceFromDirectoryDownload().toJson(); //For debugging/testing
         String filesInJson = new Client(contact.getIpAddress()).run(ServerCommand.GET_FILES_LIST); //TODO need to be tested
+
+        // Get location
+        String locationJson = new Client(contact.getIpAddress()).run(ServerCommand.GET_LOCATION); //TODO need to be tested
+
+        Tracker tracker = new Tracker(activity);
+        Location currentLocation = tracker.getLastLocation();
+        double[] coordinated = {currentLocation.getLatitude(), currentLocation.getLongitude()}; // Set default location to client
+        if( locationJson != null ) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            coordinated = gson.fromJson(locationJson, double[].class); // Get coordinate from server response
+        }
+
+        Location location = new Location(""); // Set coordinate
+        location.setLatitude(coordinated[0]);
+        location.setLongitude(coordinated[1]);
+
+        contact.setDistance(location.distanceTo(tracker.getLastLocation())); // Calculate coordinate and set to contact
 
         if (filesInJson == null) {
             if (contact.isOnline()) {

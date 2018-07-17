@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder binder) {
             serverService = ((ServerService.MyBinder) binder).getService();
             server = serverService.getServer();
+            setServerActivity();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -96,6 +97,11 @@ public class MainActivity extends AppCompatActivity {
             server = null;
         }
     };
+
+    private void setServerActivity()
+    {
+        server.setActivity(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,4 +294,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intentContacts);
     }
 
+    public Tracker getTracker() {
+        return tracker;
+    }
 }

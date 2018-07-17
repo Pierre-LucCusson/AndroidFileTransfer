@@ -1,5 +1,11 @@
 package com.androidfiletransfer.connection;
 
+import android.app.Activity;
+import android.location.Location;
+import android.location.LocationListener;
+
+import com.androidfiletransfer.MainActivity;
+import com.androidfiletransfer.Tracker;
 import com.androidfiletransfer.files.MyFile;
 
 import java.io.File;
@@ -9,11 +15,16 @@ import java.io.FileNotFoundException;
 import fi.iki.elonen.NanoHTTPD;
 
 public class Server extends NanoHTTPD {
+    Activity activity;
 
     public static final int PORT = 8080;
 
     public Server() {
         super(PORT);
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -71,7 +82,9 @@ public class Server extends NanoHTTPD {
     }
 
     public Response getLocation() {
-        return newFixedLengthResponse(ServerCommand.GET_LOCATION); //TODO
+        Location location = ((MainActivity)activity).getTracker().getLastLocation();
+        String locationJson = "{\"latitude\":" + location.getLatitude() + ", \"longitude\": " + location.getLongitude() + " }";
+        return newFixedLengthResponse(locationJson);
     }
 
 }
