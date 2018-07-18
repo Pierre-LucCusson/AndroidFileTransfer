@@ -73,12 +73,12 @@ public class Server extends NanoHTTPD {
         File file = new File(uriSection[uriSection.length - 1]);
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
-            return newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, fileInputStream, file.length());
+            return newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, fileInputStream, file.length()); //TODO can be downloaded on browser but not with client
 //            return newFixedLengthResponse(fileInputStream.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return newFixedLengthResponse(ServerCommand.FILE_NOT_FOUND); //TODO to test
+        return newFixedLengthResponse(ServerCommand.FILE_NOT_FOUND);
     }
 
     public Response getLocation() {

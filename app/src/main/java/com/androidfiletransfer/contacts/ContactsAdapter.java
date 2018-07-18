@@ -193,6 +193,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
             Intent intentFiles = new Intent(activity, FilesActivity.class);
             intentFiles.putExtra("EXTRA_FILES", filesInJson);
+            intentFiles.putExtra("EXTRA_CONTACT_IP_ADDRESS", contact.getIpAddress());
             activity.startActivity(intentFiles);
         }
     }
