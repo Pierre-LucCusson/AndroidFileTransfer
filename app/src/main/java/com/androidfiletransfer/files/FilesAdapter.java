@@ -90,21 +90,21 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
                 downloadButton.setVisibility(View.GONE);
             }
             else {
-                if(myFile.getFiles() == null) {
-                    downloadButton.setVisibility(View.VISIBLE);
+                if(myFile.isDirectory()) {
+                    downloadButton.setVisibility(View.GONE);
                 }
                 else {
-                    downloadButton.setVisibility(View.GONE);
+                    downloadButton.setVisibility(View.VISIBLE);
                 }
             }
         }
 
         public void setFileLogoTypeVisibility(MyFile myFile) {
-            if(myFile.getFiles() == null) {
-                fileLogoTypeView.setVisibility(View.GONE);
+            if(myFile.isDirectory()) {
+                fileLogoTypeView.setVisibility(View.VISIBLE);
             }
             else {
-                fileLogoTypeView.setVisibility(View.VISIBLE);
+                fileLogoTypeView.setVisibility(View.GONE);
             }
         }
     }

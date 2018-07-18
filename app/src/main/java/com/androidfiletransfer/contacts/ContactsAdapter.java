@@ -138,11 +138,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         }
     }
 
-    private void openFileActivityWithFilesOf(Contact contact) {
-        Intent intentFiles = new Intent(activity, FilesActivity.class);
-
-//        String filesInJson = MyFile.getFileInstanceFromDirectoryDownload().toJson(); //For debugging/testing
-        String filesInJson = new Client(contact.getIpAddress()).run(ServerCommand.GET_FILES_LIST); //TODO need to be tested
+    private void openFileActivityWithFilesOf(final Contact contact) {
 
         // Get location
         String locationJson = new Client(contact.getIpAddress()).run(ServerCommand.GET_LOCATION); //TODO need to be tested
@@ -161,13 +157,32 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
         contact.setDistance(location.distanceTo(tracker.getLastLocation())); // Calculate coordinate and set to contact
 
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+//                String filesInJson = MyFile.getFileInstanceFromDirectoryDownload().toJson(); //For debugging/testing
+                String filesInJson = new Client(contact.getIpAddress()).run(ServerCommand.GET_FILES_LIST);
+                openFileActivityWith(contact, filesInJson);
+
+            }
+        }).start();
+    }
+
+    private void openFileActivityWith(Contact contact, String filesInJson) {
         if (filesInJson == null) {
             if (contact.isOnline()) {
                 contact.setOnline(false);
                 contact.save(activity);
                 notifyDataSetChanged();
             }
-            Toast.makeText(activity.getApplicationContext(), "The contact is offline." ,Toast.LENGTH_LONG).show();
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(activity.getApplicationContext(), R.string.contact_offline, Toast.LENGTH_LONG).show();
+                }
+            });
         }
         else {
             if (!contact.isOnline()) {
@@ -175,6 +190,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
                 contact.save(activity);
                 notifyDataSetChanged();
             }
+
+            Intent intentFiles = new Intent(activity, FilesActivity.class);
             intentFiles.putExtra("EXTRA_FILES", filesInJson);
             activity.startActivity(intentFiles);
         }

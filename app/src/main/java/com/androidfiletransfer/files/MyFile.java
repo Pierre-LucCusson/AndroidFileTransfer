@@ -14,6 +14,7 @@ public class MyFile {
     private String fileName;
     private String path ;
     private List<MyFile> files;
+    private boolean isDirectory = false;
     private transient boolean isOpen = false;
 
     private MyFile() {
@@ -28,16 +29,11 @@ public class MyFile {
         return new MyFile();
     }
 
-    public MyFile(String fileName, String path, List<MyFile> files) {
-        this.fileName = fileName;
-        this.path = path;
-        this.files = files;
-    }
-
     public MyFile(File file) {
         fileName = file.getName();
         path = file.getPath();
         if(file.isDirectory()) {
+            isDirectory = true;
             files = new ArrayList<>();
             for (File innerFile : file.listFiles()) {
                 files.add(new MyFile(innerFile));
@@ -65,16 +61,8 @@ public class MyFile {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
     public String getPath() {
         return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public List<MyFile> getFiles() {
@@ -83,6 +71,10 @@ public class MyFile {
 
     public void setFiles(List<MyFile> files) {
         this.files = files;
+    }
+
+    public boolean isDirectory() {
+        return isDirectory;
     }
 
     public boolean isOpen() {
@@ -106,7 +98,7 @@ public class MyFile {
             }
         }
 
-        if (files != null && isOpen) {
+        if (isDirectory && isOpen) {
             for (MyFile file : files) {
                 totalAmountOfFiles += file.size();
             }
@@ -123,7 +115,7 @@ public class MyFile {
                 filePosition++;
             }
             for (MyFile myFile : files) {
-                if (myFile.isOpen()) {
+                if (myFile.isDirectory && myFile.isOpen()) {
                     if (filePosition + myFile.size() > position) {
                         return myFile.getFileAt(position - filePosition);
                     } else {
