@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
 
+import java.util.Date;
+
 public class Contact {
 
     private String deviceId;
@@ -19,6 +21,13 @@ public class Contact {
         isOnline = false;
         distance = 0;
         lastLogin = 0;
+    }
+
+    public static Contact getMyInformation(String deviceId, String ipAddress) {
+        Contact myContactInformation = new Contact(deviceId, ipAddress);
+        myContactInformation.setOnline(true);
+        myContactInformation.setLastLoginToNow();
+        return myContactInformation;
     }
 
     public String toJson() {
@@ -61,8 +70,16 @@ public class Contact {
         return lastLogin;
     }
 
+    public String getLastLoginInDateFormat() {
+        return new Date(lastLogin).toString();
+    }
+
     public void setLastLogin(long lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public void setLastLoginToNow() {
+        lastLogin = System.currentTimeMillis();
     }
 
     @Override
@@ -89,4 +106,26 @@ public class Contact {
         editor.commit();
     }
 
+    public boolean setOnlineAndSave(Activity activity) {
+        if (!isOnline) {
+            isOnline = true;
+            save(activity);
+            lastLogin = System.currentTimeMillis();
+           return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public boolean setOfflineAndSave(Activity activity) {
+        if (isOnline) {
+            isOnline = false;
+            save(activity);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

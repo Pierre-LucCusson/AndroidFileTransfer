@@ -80,7 +80,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
         myViewHolder.name.setText(contact.getIpAddress());
         myViewHolder.distance.setText(String.valueOf(contact.getDistance()));
-        myViewHolder.lastAccess.setText(String.valueOf(contact.getLastLogin()));
+        myViewHolder.lastAccess.setText(String.valueOf(contact.getLastLoginInDateFormat()));
     }
 
     @Override
@@ -171,24 +171,25 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         }).start();
     }
 
-    private void openFileActivityWith(Contact contact, String filesInJson) {
+    private void openFileActivityWith(final Contact contact, String filesInJson) {
         if (filesInJson == null) {
-            if (contact.isOnline()) {
-                contact.setOnline(false);
-                contact.save(activity);
-                notifyDataSetChanged();
-            }
+
             activity.runOnUiThread(new Runnable() {
                 public void run() {
+                    if (contact.setOfflineAndSave(activity)) {
+                        notifyDataSetChanged();
+                    }
                     Toast.makeText(activity.getApplicationContext(), R.string.contact_offline, Toast.LENGTH_LONG).show();
                 }
             });
         }
         else {
-            if (!contact.isOnline()) {
-                contact.setOnline(true);
-                contact.save(activity);
-                notifyDataSetChanged();
+            if(contact.setOnlineAndSave(activity)) {
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
             }
 
             Intent intentFiles = new Intent(activity, FilesActivity.class);
