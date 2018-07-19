@@ -128,4 +128,14 @@ public class Contact {
             return false;
         }
     }
+
+    public boolean setLocationAndSave(String location, Activity activity) { //TODO
+//        if(location has change || !isOnline) {
+//            setLocation where ???
+//            isOnline = true;
+//            save(activity);
+//            return true;
+//        }
+        return false;
+    }
 }
