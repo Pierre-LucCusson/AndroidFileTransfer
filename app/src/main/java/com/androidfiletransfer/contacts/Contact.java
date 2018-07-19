@@ -79,6 +79,7 @@ public class Contact {
     }
 
     public void setLastLoginToNow() {
+        isOnline = true;
         lastLogin = System.currentTimeMillis();
     }
 
@@ -129,13 +130,9 @@ public class Contact {
         }
     }
 
-    public boolean setLocationAndSave(String location, Activity activity) { //TODO
-//        if(location has change || !isOnline) {
-//            setLocation where ???
-//            isOnline = true;
-//            save(activity);
-//            return true;
-//        }
-        return false;
+    public void setLocationAndSave(String location, Activity activity) {
+        distance++; //TODO should actually set the distance or position
+        setLastLoginToNow();
+        save(activity);
     }
 }

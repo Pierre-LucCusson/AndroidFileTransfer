@@ -1,9 +1,12 @@
 package com.androidfiletransfer.connection;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+
+import com.androidfiletransfer.contacts.ContactsUpdater;
 
 public class ServerService  extends Service {
     private Server server;
@@ -64,5 +67,9 @@ public class ServerService  extends Service {
 
     public void setmBinder(IBinder mBinder) {
         this.mBinder = mBinder;
+    }
+
+    public void setContactUpdater(Activity activity) {
+        new ContactsUpdater(activity);
     }
 }

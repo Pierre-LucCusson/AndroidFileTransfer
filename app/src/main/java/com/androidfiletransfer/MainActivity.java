@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder binder) {
             serverService = ((ServerService.MyBinder) binder).getService();
             server = serverService.getServer();
+            serverService.setContactUpdater(MainActivity.this);
             setServerActivity();
         }
 
