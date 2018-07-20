@@ -2,7 +2,9 @@ package com.androidfiletransfer.connection;
 
 import android.app.Activity;
 
+import com.androidfiletransfer.Position;
 import com.androidfiletransfer.contacts.Contact;
+import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,9 +51,10 @@ public class ClientLongPolling {
 
     public void updateLocation(Activity activity, Contact contact) {
         String url = "http://" + contact.getIpAddress() + ServerCommand.GET_LOCATION;
-        String location = run(url);
-        if (location != null) {
-            contact.setLocationAndSave(location, activity);
+        String locationInJson = run(url);
+        if (locationInJson != null) {
+            Position position = new Gson().fromJson(locationInJson, Position.class);
+            contact.setLocationAndSave(position, activity);
         }
         else {
             contact.setOfflineAndSave(activity);

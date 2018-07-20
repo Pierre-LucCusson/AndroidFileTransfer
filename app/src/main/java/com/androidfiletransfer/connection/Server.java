@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationListener;
 
 import com.androidfiletransfer.MainActivity;
+import com.androidfiletransfer.Position;
 import com.androidfiletransfer.Tracker;
 import com.androidfiletransfer.files.MyFile;
 
@@ -83,8 +84,7 @@ public class Server extends NanoHTTPD {
 
     public Response getLocation() {
         Location location = ((MainActivity)activity).getTracker().getLastLocation();
-        String locationJson = "{\"latitude\":" + location.getLatitude() + ", \"longitude\": " + location.getLongitude() + " }";
-        return newFixedLengthResponse(locationJson);
+        return newFixedLengthResponse(new Position(location.getLatitude(), location.getLongitude()).toJson());
     }
 
 }

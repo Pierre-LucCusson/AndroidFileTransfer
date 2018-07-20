@@ -2,6 +2,8 @@ package com.androidfiletransfer.contacts;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+
+import com.androidfiletransfer.Position;
 import com.google.gson.Gson;
 
 import java.util.Date;
@@ -12,6 +14,8 @@ public class Contact {
     private String ipAddress;
     private boolean isOnline;
     private double distance;
+    private transient double latitude;
+    private transient double longitude;
     private long lastLogin;
 
     public Contact(String deviceId, String ipAddress) {
@@ -20,6 +24,8 @@ public class Contact {
         this.ipAddress = ipAddress;
         isOnline = false;
         distance = 0;
+        latitude = 0;
+        longitude = 0;
         lastLogin = 0;
     }
 
@@ -28,6 +34,12 @@ public class Contact {
         myContactInformation.setOnline(true);
         myContactInformation.setLastLoginToNow();
         return myContactInformation;
+    }
+
+    public static Contact getWith(String deviceId, Activity activity) {
+        SharedPreferences sharedPrefs = activity.getSharedPreferences("Contacts", 0);
+        String contactInJson = sharedPrefs.getString(deviceId, "");
+        return new Gson().fromJson(contactInJson, Contact.class);
     }
 
     public String toJson() {
@@ -130,8 +142,10 @@ public class Contact {
         }
     }
 
-    public void setLocationAndSave(String location, Activity activity) {
-        distance++; //TODO should actually set the distance or position
+    public void setLocationAndSave(Position position, Activity activity) {
+        this.latitude = position.getLatitude();
+        this.longitude = position.getLongitude();
+        distance++; //TODO should actually set the distance
         setLastLoginToNow();
         save(activity);
     }
