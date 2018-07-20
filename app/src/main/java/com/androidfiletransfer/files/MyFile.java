@@ -25,6 +25,13 @@ public class MyFile {
         }
     }
 
+    private MyFile(MyFile[] myFiles) {
+        files = new ArrayList<>();
+        for (MyFile internalFile : myFiles) {
+            files.add(internalFile);
+        }
+    }
+
     public static MyFile getFileInstanceFromDirectoryDownload() {
         return new MyFile();
     }
@@ -45,7 +52,8 @@ public class MyFile {
     }
 
     public static MyFile getFilesWith(String filesInJson) {
-        return new Gson().fromJson(filesInJson, MyFile.class);
+        MyFile[] myFile =  new Gson().fromJson(filesInJson, MyFile[].class);
+        return new MyFile(myFile);
     }
 
     private File[] getFilesFromDirectoryDownload() {
@@ -54,7 +62,7 @@ public class MyFile {
     }
 
     public String toJson() {
-        return new Gson().toJson(this);
+        return new Gson().toJson(files);
     }
 
     public String getFileName() {
