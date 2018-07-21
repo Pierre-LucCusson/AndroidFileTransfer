@@ -123,7 +123,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
         String ipAddress = activity.getIntent().getStringExtra("EXTRA_CONTACT_IP_ADDRESS");
 
         MyFile myFile = files.getFileAt(filePosition);
-        Uri fileUri = Uri.parse("https://" + ipAddress + ServerCommand.GET_FILE + myFile.getPath()); //TODO this line does not work, is the problem from the server ?
+        Uri fileUri = Uri.parse("http://" + ipAddress + ServerCommand.GET_FILE + "?path=" + myFile.getPath()); //TODO this line does not work, is the problem from the server ?
 //        Uri fileUri = Uri.parse("https://2017.brucon.org/images/b/bc/Twitter_logo.jpg"); // for testing/debugging
 
         DownloadManager downloadManager = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -132,6 +132,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, myFile.getFileName());
+        request.setMimeType("image/jpeg");
 //        request.setDestinationInExternalFilesDir(activity, Environment.DIRECTORY_DOWNLOADS, myFile.getFileName());
         downloadManager.enqueue(request);
 

@@ -69,13 +69,15 @@ public class Server extends NanoHTTPD {
 
     public Response getFile(IHTTPSession session) {
 
-        String[] uriSection = session.getUri().split(ServerCommand.GET_FILE + "/");
+        String filePath = session.getParms().get("path");
+        File file = new File(filePath);
 
-        File file = new File(uriSection[uriSection.length - 1]);
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
-            return newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, fileInputStream, file.length()); //TODO can be downloaded on browser but not with client
-//            return newFixedLengthResponse(fileInputStream.toString());
+
+            Response response = newFixedLengthResponse(Response.Status.OK, "image/jpeg", fileInputStream, file.length());
+            response.addHeader("Content-Disposition", "attachment; filename=\""+file.getName()+"\"");
+            return response;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
