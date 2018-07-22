@@ -45,7 +45,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
         myViewHolder.setFileText(myFile.getFileName());
 
-        myViewHolder.setDownloadButtonVisibility(myFile);
+        myViewHolder.setDownloadButtonDrawableAndVisibility(myFile);
         myViewHolder.setFileLogoTypeVisibility(myFile);
     }
 
@@ -58,7 +58,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
         private ImageView fileLogoTypeView;
         private TextView fileText;
-        private ImageButton downloadButton;
+        private ImageButton downloadOrDeleteButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -67,11 +67,16 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
             fileLogoTypeView = itemView.findViewById(R.id.fileLogoTypeView);
             fileText = itemView.findViewById(R.id.fileText);
-            downloadButton = itemView.findViewById(R.id.downloadButton);
-            downloadButton.setOnClickListener(new View.OnClickListener() {
+            downloadOrDeleteButton = itemView.findViewById(R.id.downloadButton);
+            downloadOrDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    downloadFile(getAdapterPosition());
+                    if(activity.getClass() == MainActivity.class) {
+                        deleteFile(getAdapterPosition());
+                    }
+                    else {
+                        downloadFile(getAdapterPosition());
+                    }
                 }
 
             });
@@ -86,16 +91,18 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
             fileText.setText(text);
         }
 
-        public void setDownloadButtonVisibility(MyFile myFile) {
+        public void setDownloadButtonDrawableAndVisibility(MyFile myFile) {
             if (activity.getClass() == MainActivity.class) {
-                downloadButton.setVisibility(View.GONE);
+                downloadOrDeleteButton.setBackgroundResource(android.R.drawable.ic_delete);
+                downloadOrDeleteButton.setVisibility(View.VISIBLE);
             }
             else {
                 if(myFile.isDirectory()) {
-                    downloadButton.setVisibility(View.GONE);
+                    downloadOrDeleteButton.setVisibility(View.GONE);
                 }
                 else {
-                    downloadButton.setVisibility(View.VISIBLE);
+                    downloadOrDeleteButton.setBackgroundResource(android.R.drawable.arrow_down_float);
+                    downloadOrDeleteButton.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -135,5 +142,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 //        request.setDestinationInExternalFilesDir(activity, Environment.DIRECTORY_DOWNLOADS, myFile.getFileName());
         downloadManager.enqueue(request);
 
+    }
+
+    private void deleteFile(int filePosition) {
+
+        //TODO remove file from attribute files
+
+        //TODO delete the real file
+
+        //notifyDataSetChanged();
     }
 }
