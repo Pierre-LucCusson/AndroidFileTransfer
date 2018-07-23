@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
@@ -145,11 +146,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
     }
 
     private void deleteFile(int filePosition) {
+        files.deleteAtPosition(filePosition);
 
-        //TODO remove file from attribute files
-
-        //TODO delete the real file
-
-        //notifyDataSetChanged();
+        notifyDataSetChanged();
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(activity, R.string.file_deleted, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
