@@ -61,6 +61,26 @@ public class MyFile {
         return downloadFolder.listFiles();
     }
 
+    public void delete()
+    {
+        if(isDirectory == false)
+        {
+            File file = new File(path);
+            file.delete();
+        }
+    }
+
+    public void deleteAtPosition(int position)
+    {
+        MyFile myFile = files.remove(position);
+
+        if(myFile.isDirectory == false)
+        {
+            File file = new File(myFile.getPath());
+            file.delete();
+        }
+    }
+
     public String toJson() {
         return new Gson().toJson(files);
     }

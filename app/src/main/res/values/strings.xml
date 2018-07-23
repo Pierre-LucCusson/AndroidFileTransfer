@@ -20,4 +20,6 @@
 
     <string name="contact_offline">"The contact is offline."</string>
 
+    <string name="file_deleted">"The file has been successfully deleted."</string>
+
 </resources>
