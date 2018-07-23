@@ -149,25 +149,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
     private void openFileActivityWithFilesOf(final Contact contact) {
 
-        // Get location
-        String locationJson = new Client(contact.getIpAddress()).run(ServerCommand.GET_LOCATION); //TODO need to be tested
-
-        Tracker tracker = new Tracker(activity);
-        Location currentLocation = tracker.getLastLocation();
-        double[] coordinated = {currentLocation.getLatitude(), currentLocation.getLongitude()}; // Set default location to client
-        if( locationJson != null ) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            coordinated = gson.fromJson(locationJson, double[].class); // Get coordinate from server response
-        }
-
-        Location location = new Location(""); // Set coordinate
-        location.setLatitude(coordinated[0]);
-        location.setLongitude(coordinated[1]);
-
-        contact.setDistance(location.distanceTo(tracker.getLastLocation())); // Calculate coordinate and set to contact
-
-
-
         new Thread(new Runnable() {
             @Override
             public void run() {
