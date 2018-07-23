@@ -91,6 +91,15 @@ public class Contacts implements Comparable<Contact> {
         return compareTo(contactToCompareWith);
     }
 
+    public void orderByDeviceId() {
+        Collections.sort(contacts, new Comparator<Contact>() {
+            @Override
+            public int compare(Contact contactA, Contact contactB) {
+                return contactA.getDeviceId().compareTo(contactB.getDeviceId());
+            }
+        });
+    }
+
     public void orderByIpAddress() {
 
         Collections.sort(contacts, new Comparator<Contact>() {
@@ -120,5 +129,6 @@ public class Contacts implements Comparable<Contact> {
             }
         });
     }
+
 
 }

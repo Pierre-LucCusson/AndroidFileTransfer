@@ -22,4 +22,9 @@
 
     <string name="file_deleted">"The file has been successfully deleted."</string>
 
+    <string name="sort_id">Sort by ID</string>
+    <string name="sort_ip">Sort by IP</string>
+    <string name="sort_distance">Sort by Distance</string>
+    <string name="sort_last_login">Sort by Last Login</string>
+
 </resources>

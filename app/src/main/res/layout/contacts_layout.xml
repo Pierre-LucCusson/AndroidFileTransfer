@@ -14,6 +14,16 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnSortID"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/sort_button_margin"
+            android:background="@color/colorButton"
+            android:textColor="@color/colorWhite"
+            android:text="@string/sort_id" />
+
+        <Button
             android:id="@+id/btnSortIP"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -21,13 +31,13 @@
             android:layout_margin="@dimen/sort_button_margin"
             android:background="@color/colorButton"
             android:textColor="@color/colorWhite"
-            android:text="Sort by IP" />
+            android:text="@string/sort_ip" />
 
         <Button
             android:id="@+id/btnSortDistance"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:text="Sort by Distance"
+            android:text="@string/sort_distance"
             android:layout_margin="@dimen/sort_button_margin"
             android:background="@color/colorButton"
             android:textColor="@color/colorWhite"
@@ -37,7 +47,7 @@
             android:id="@+id/btnSortLastLogin"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:text="Sort by Last login"
+            android:text="@string/sort_last_login"
             android:layout_margin="@dimen/sort_button_margin"
             android:background="@color/colorButton"
             android:textColor="@color/colorWhite"
