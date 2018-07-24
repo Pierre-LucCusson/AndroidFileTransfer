@@ -27,49 +27,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
     private Contacts contacts;
     private Activity activity;
     private Observable contactsUpdaterObservable;
+    private SortContactsBy sortContactsBy;
 
     private Button btnSortDeviceID, btnSortIpAddress, btnSortDistance, btnSortLastLogin;
 
     public ContactsAdapter(final Contacts contacts, Activity activity) {
         this.contacts = contacts;
         this.activity = activity;
-
-        btnSortDeviceID = activity.findViewById(R.id.btnSortID);
-        btnSortIpAddress = activity.findViewById(R.id.btnSortIP);
-        btnSortDistance = activity.findViewById(R.id.btnSortDistance);
-        btnSortLastLogin = activity.findViewById(R.id.btnSortLastLogin);
-
-        btnSortDeviceID.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contacts.orderByDeviceId();
-                notifyDataSetChanged();
-            }
-        });
-
-        btnSortIpAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contacts.orderByIpAddress();
-                notifyDataSetChanged();
-            }
-        });
-
-        btnSortDistance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contacts.orderByDistance();
-                notifyDataSetChanged();
-            }
-        });
-
-        btnSortLastLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contacts.orderByLastLogin();
-                notifyDataSetChanged();
-            }
-        });
+        sortContactsBy = SortContactsBy.DEFAULT;
 
         contactsUpdaterObservable = ContactsUpdater.getInstance(activity);
         contactsUpdaterObservable.addObserver(this);
@@ -78,6 +43,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        setSortButtonsOnClickListener();
         return new MyViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_item, viewGroup, false));
     }
 
@@ -196,14 +162,59 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         }
     }
 
+    private void setSortButtonsOnClickListener() {
+        btnSortDeviceID = activity.findViewById(R.id.btnSortID);
+        btnSortIpAddress = activity.findViewById(R.id.btnSortIP);
+        btnSortDistance = activity.findViewById(R.id.btnSortDistance);
+        btnSortLastLogin = activity.findViewById(R.id.btnSortLastLogin);
+
+        btnSortDeviceID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.orderByDeviceId();
+                sortContactsBy = SortContactsBy.DEVICE_ID;
+                notifyDataSetChanged();
+            }
+        });
+
+        btnSortIpAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.orderByIpAddress();
+                sortContactsBy = SortContactsBy.IP_ADDRESS;
+                notifyDataSetChanged();
+            }
+        });
+
+        btnSortDistance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.orderByDistance();
+                sortContactsBy = SortContactsBy.DISTANCE;
+                notifyDataSetChanged();
+            }
+        });
+
+        btnSortLastLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                contacts.orderByLastLogin();
+                sortContactsBy = SortContactsBy.LAST_LOGIN;
+                notifyDataSetChanged();
+            }
+        });
+    }
+
     @Override
     public void update(Observable observable, Object contact) {
         if (observable instanceof ContactsUpdater) {
             String deviceId = ((Contact)contact).getDeviceId();
+
+            contacts = new Contacts(activity);
+            contacts.orderBy(sortContactsBy);
+
             activity.runOnUiThread(new Runnable() {
                 public void run() {
-                    contacts = new Contacts(activity);
-                    //TODO sort contact
                     notifyDataSetChanged();
                 }
             });

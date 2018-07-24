@@ -131,4 +131,24 @@ public class Contacts implements Comparable<Contact> {
     }
 
 
+    public void orderBy(SortContactsBy sortContactsBy) {
+        if (sortContactsBy != null) {
+            switch (sortContactsBy) {
+                case DEVICE_ID:
+                    orderByDeviceId();
+                    return;
+                case IP_ADDRESS:
+                    orderByIpAddress();
+                    return;
+                case DISTANCE:
+                    orderByDistance();
+                    return;
+                case LAST_LOGIN:
+                    orderByLastLogin();
+                    return;
+                default:
+                    return;
+            }
+        }
+    }
 }
