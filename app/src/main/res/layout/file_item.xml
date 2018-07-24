@@ -18,7 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/file_item_margin"
-            android:background="@android:drawable/ic_menu_report_image"
+            android:background="@android:drawable/ic_menu_gallery"
             android:layout_alignParentStart="true" />
 
         <TextView

@@ -10,18 +10,27 @@ import com.androidfiletransfer.connection.ServerCommand;
 import com.google.gson.Gson;
 
 import java.util.List;
+import java.util.Observable;
 
-public class ContactsUpdater {
+public class ContactsUpdater extends Observable {
 
+    private static ContactsUpdater INSTANCE = null;
     private Activity activity;
     private List<Contact> contacts;
     private Tracker tracker;
 
-    public ContactsUpdater(Activity activity) {
+    private ContactsUpdater(Activity activity) {
         this.activity = activity;
         tracker = new Tracker(activity);
 
         updateAllContacts();
+    }
+
+    public static ContactsUpdater getInstance(final Activity activity) {
+        if (INSTANCE == null) {
+            INSTANCE = new ContactsUpdater(activity);
+        }
+        return INSTANCE;
     }
 
     private void updateAllContacts() {
@@ -45,25 +54,16 @@ public class ContactsUpdater {
             if (locationInJson != null) {
                 Position position = new Gson().fromJson(locationInJson, Position.class);
                 setLocationAndSave(contact, position);
-                //TODO notify contacts view
-//            //for testing
-//                activity.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(activity.getApplicationContext(), contact.getIpAddress() + " is online", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
+                setChanged();
+                notifyObservers(contact);
+
             } else {
                 if (contact.setOfflineAndSave(activity)) {
-                    //TODO notify contacts view
+                    setChanged();
+                    notifyObservers(contact);
                 }
-//            //for testing
-//                activity.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Toast.makeText(activity.getApplicationContext(), contact.getIpAddress() + " is offline", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
             }
         }
     }

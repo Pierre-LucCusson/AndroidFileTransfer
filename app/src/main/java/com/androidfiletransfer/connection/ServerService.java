@@ -70,6 +70,6 @@ public class ServerService  extends Service {
     }
 
     public void setContactUpdater(Activity activity) {
-        new ContactsUpdater(activity);
+        ContactsUpdater.getInstance(activity);
     }
 }

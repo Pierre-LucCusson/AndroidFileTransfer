@@ -12,6 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/nfc_button_margin"
+        android:layout_margin="@dimen/margin_button"
+        android:background="@color/colorButton"
+        android:textColor="@color/colorWhite"
         android:layout_alignParentTop="true"/>
 
     <Button
@@ -20,6 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/nfc_button_margin"
+        android:layout_margin="@dimen/margin_button"
+        android:background="@color/colorButton"
+        android:textColor="@color/colorWhite"
         android:layout_below="@id/nfcSendButton" />
 
     <Button
@@ -28,6 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/nfc_button_margin"
+        android:layout_margin="@dimen/margin_button"
+        android:background="@color/colorButton"
+        android:textColor="@color/colorWhite"
         android:layout_below="@id/nfcReceiveButton" />
 
 </RelativeLayout>

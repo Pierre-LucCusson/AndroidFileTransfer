@@ -8,24 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.R;
-import com.androidfiletransfer.Tracker;
 import com.androidfiletransfer.connection.Client;
 import com.androidfiletransfer.connection.ServerCommand;
 import com.androidfiletransfer.files.FilesActivity;
-import com.androidfiletransfer.files.MyFile;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder>{
+import java.util.Observable;
+import java.util.Observer;
+
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyViewHolder> implements Observer {
 
     private Contacts contacts;
     private Activity activity;
+    private Observable contactsUpdaterObservable;
 
     private Button btnSortDeviceID, btnSortIpAddress, btnSortDistance, btnSortLastLogin;
 
@@ -70,6 +71,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
             }
         });
 
+        contactsUpdaterObservable = ContactsUpdater.getInstance(activity);
+        contactsUpdaterObservable.addObserver(this);
+
     }
 
     @Override
@@ -87,7 +91,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
             myViewHolder.status.setImageDrawable(activity.getResources().getDrawable(android.R.drawable.presence_offline));
         }
 
-        myViewHolder.name.setText(contact.getIpAddress());
+        myViewHolder.deviceIdText.setText(contact.getDeviceId());
+        myViewHolder.ipAddressText.setText(contact.getIpAddress());
         myViewHolder.distance.setText(String.valueOf(contact.getDistance()));
         myViewHolder.lastAccess.setText(String.valueOf(contact.getLastLoginInDateFormat()));
     }
@@ -105,10 +110,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView status;
-        TextView name;
+        TextView deviceIdText;
+        TextView ipAddressText;
         TextView distance;
         TextView lastAccess;
-        Button saveOrDeleteButton;
+        ImageButton saveOrDeleteButton;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -123,7 +129,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
             });
 
             status = itemView.findViewById(R.id.imageViewStatus);
-            name = itemView.findViewById(R.id.name);
+            deviceIdText = itemView.findViewById(R.id.deviceIdText);
+            ipAddressText = itemView.findViewById(R.id.ipAddressText);
             distance = itemView.findViewById(R.id.distance);
             lastAccess = itemView.findViewById(R.id.lastAccess);
 
@@ -186,6 +193,21 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
             intentFiles.putExtra("EXTRA_FILES", filesInJson);
             intentFiles.putExtra("EXTRA_CONTACT_IP_ADDRESS", contact.getIpAddress());
             activity.startActivity(intentFiles);
+        }
+    }
+
+    @Override
+    public void update(Observable observable, Object contact) {
+        if (observable instanceof ContactsUpdater) {
+            String deviceId = ((Contact)contact).getDeviceId();
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    contacts = new Contacts(activity);
+                    //TODO sort contact
+                    notifyDataSetChanged();
+                }
+            });
+
         }
     }
 
