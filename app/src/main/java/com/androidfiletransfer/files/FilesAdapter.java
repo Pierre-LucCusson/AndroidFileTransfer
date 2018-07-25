@@ -102,7 +102,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
                     downloadOrDeleteButton.setVisibility(View.GONE);
                 }
                 else {
-                    downloadOrDeleteButton.setBackgroundResource(android.R.drawable.arrow_down_float);
+                    downloadOrDeleteButton.setBackgroundResource(R.drawable.ic_file_download_green_24dp);
                     downloadOrDeleteButton.setVisibility(View.VISIBLE);
                 }
             }
@@ -110,6 +110,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.MyViewHolder
 
         public void setFileLogoTypeVisibility(MyFile myFile) {
             if(myFile.isDirectory()) {
+                if (myFile.isOpen()) {
+                    fileLogoTypeView.setBackgroundResource(R.drawable.ic_folder_open_light_blue_24dp);
+                }
+                else {
+                    fileLogoTypeView.setBackgroundResource(R.drawable.ic_folder_light_blue_24dp);
+                }
                 fileLogoTypeView.setVisibility(View.VISIBLE);
             }
             else {

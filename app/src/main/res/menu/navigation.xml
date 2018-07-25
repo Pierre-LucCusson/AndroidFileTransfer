@@ -13,17 +13,17 @@
 
     <item
         android:id="@+id/navigation_nfc"
-        android:icon="@android:drawable/ic_menu_set_as"
+        android:icon="@drawable/ic_nfc_black_24dp"
         android:title="@string/title_nfc" />
 
     <item
         android:id="@+id/navigation_contacts"
-        android:icon="@android:drawable/ic_menu_myplaces"
+        android:icon="@drawable/ic_contacts_black_24dp"
         android:title="@string/title_contacts" />
 
     <item
         android:id="@+id/navigation_files"
-        android:icon="@android:drawable/ic_menu_gallery"
+        android:icon="@drawable/ic_folder_light_blue_24dp"
         android:title="@string/title_files" />
 
 </menu>
