@@ -42,6 +42,12 @@ public class ContactsUpdater extends Observable {
                     for (Contact contact : contacts) {
                         updateContact(contact);
                     }
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();
@@ -80,6 +86,7 @@ public class ContactsUpdater extends Observable {
         location.setLongitude(positionOfContact.getLongitude());
 
         contact.setDistance(location.distanceTo(tracker.getLastLocation()));
+        contact.setOnline(true);
         contact.save(activity);
     }
 

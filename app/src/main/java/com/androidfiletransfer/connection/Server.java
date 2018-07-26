@@ -7,6 +7,7 @@ import android.location.LocationListener;
 import com.androidfiletransfer.MainActivity;
 import com.androidfiletransfer.Position;
 import com.androidfiletransfer.Tracker;
+import com.androidfiletransfer.files.MimeType;
 import com.androidfiletransfer.files.MyFile;
 
 import java.io.File;
@@ -75,7 +76,7 @@ public class Server extends NanoHTTPD {
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
 
-            Response response = newFixedLengthResponse(Response.Status.OK, "image/jpeg", fileInputStream, file.length());
+            Response response = newFixedLengthResponse(Response.Status.OK, new MimeType().get(file), fileInputStream, file.length());
             response.addHeader("Content-Disposition", "attachment; filename=\""+file.getName()+"\"");
             return response;
         } catch (FileNotFoundException e) {

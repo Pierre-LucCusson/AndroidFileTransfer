@@ -210,14 +210,16 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.MyView
         if (observable instanceof ContactsUpdater) {
             String deviceId = ((Contact)contact).getDeviceId();
 
-            contacts = new Contacts(activity);
-            contacts.orderBy(sortContactsBy);
+            if(activity.getClass() == MainActivity.class) {
+                contacts = new Contacts(activity);
+                contacts.orderBy(sortContactsBy);
 
-            activity.runOnUiThread(new Runnable() {
-                public void run() {
-                    notifyDataSetChanged();
-                }
-            });
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
+            }
 
         }
     }
